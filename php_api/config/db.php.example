@@ -1,0 +1,33 @@
+<?php
+// Template for db.php – copy this file and fill in real credentials
+// db.php is in .gitignore and will not be committed to the repo
+
+define('DB_HOST',   'localhost');      // Plesk: usually localhost
+define('DB_NAME',   'your_database'); // Database name in Plesk
+define('DB_USER',   'db_user');       // Database username in Plesk
+define('DB_PASS',   'db_password');   // Database password
+define('DB_CHARSET','utf8mb4');
+
+// Build PDO connection with prepared statements enabled (NFA-07)
+function getDbConnection(): PDO
+{
+    $dsn = sprintf(
+        'mysql:host=%s;dbname=%s;charset=%s',
+        DB_HOST,
+        DB_NAME,
+        DB_CHARSET
+    );
+
+    $options = [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false, // Real prepared statements
+    ];
+
+    try {
+        return new PDO($dsn, DB_USER, DB_PASS, $options);
+    } catch (PDOException $e) {
+        // Do not expose internal error details (NFA-08)
+        throw new RuntimeException('Database connection failed.', 500);
+    }
+}

@@ -1,0 +1,61 @@
+# ═══════════════════════════════════════════════════════
+#  Storify API – .htaccess
+#  Sicherheit + URL-Rewriting + CORS
+# ═══════════════════════════════════════════════════════
+
+# Verzeichnisauflistung deaktivieren
+Options -Indexes
+
+RewriteEngine On
+
+# ── Direktzugriff auf sensitive Ordner/Dateien blockieren ──────────────────
+
+# config/ komplett sperren (db.php darf nie direkt aufgerufen werden)
+RewriteRule ^config/         - [F,L]
+
+# helpers/ direkt sperren
+RewriteRule ^helpers/        - [F,L]
+
+# database/ direkt sperren (schema.sql nicht öffentlich)
+RewriteRule ^database/       - [F,L]
+
+# .example-Dateien sperren
+RewriteRule \.example$       - [F,L]
+
+# ── Sicherheits-Header ────────────────────────────────────────────────────
+
+# Kein Sniffing des MIME-Types
+Header always set X-Content-Type-Options "nosniff"
+
+# Kein Einbetten in iframes (Clickjacking)
+Header always set X-Frame-Options "DENY"
+
+# Referrer-Info minimieren
+Header always set Referrer-Policy "no-referrer"
+
+# ── CORS-Header (NFA-09) ──────────────────────────────────────────────────
+
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type, Accept"
+
+# OPTIONS-Preflight sofort beantworten
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^ - [R=204,L]
+
+# ── URL-Rewriting: saubere REST-URLs ──────────────────────────────────────
+
+# /items → items/index.php
+RewriteRule ^items/?$                  items/index.php        [L,QSA]
+
+# /items/{id} → items/single.php?id={id}
+RewriteRule ^items/([0-9]+)/?$         items/single.php?id=$1 [L,QSA]
+
+# /locations → locations/index.php
+RewriteRule ^locations/?$              locations/index.php        [L,QSA]
+
+# /locations/{id} → locations/single.php?id={id}
+RewriteRule ^locations/([0-9]+)/?$     locations/single.php?id=$1 [L,QSA]
+
+# /health → health.php (Verbindungscheck)
+RewriteRule ^health/?$                health.php             [L,QSA]

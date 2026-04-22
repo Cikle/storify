@@ -1,0 +1,10 @@
+.env
+~$*
+php_api/config/db.php
+# Flutter
+storify/.dart_tool/
+storify/build/
+storify/.flutter-plugins
+storify/.flutter-plugins-dependencies
+*claude 
+CLAUDE.md

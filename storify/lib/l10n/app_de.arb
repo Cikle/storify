@@ -1,0 +1,534 @@
+{
+  "@@locale": "de",
+
+  "appTitle": "Storify",
+  "@appTitle": { "description": "App-Titel" },
+
+  "navDashboard": "Dashboard",
+  "@navDashboard": { "description": "Navigation: Dashboard-Tab" },
+
+  "navInventory": "Inventar",
+  "@navInventory": { "description": "Navigation: Inventar-Tab" },
+
+  "navLocations": "Standorte",
+  "@navLocations": { "description": "Navigation: Standorte-Tab" },
+
+  "navSettings": "Einstellungen",
+  "@navSettings": { "description": "Navigation: Einstellungen-Tab" },
+
+  "btnSave": "Speichern",
+  "@btnSave": { "description": "Speichern-Button" },
+
+  "btnCreate": "Erstellen",
+  "@btnCreate": { "description": "Erstellen-Button" },
+
+  "btnDelete": "Löschen",
+  "@btnDelete": { "description": "Löschen-Button" },
+
+  "btnCancel": "Abbrechen",
+  "@btnCancel": { "description": "Abbrechen-Button" },
+
+  "btnEdit": "Bearbeiten",
+  "@btnEdit": { "description": "Bearbeiten-Button" },
+
+  "btnCheckConnection": "Verbindung prüfen",
+  "@btnCheckConnection": { "description": "Verbindungstest-Button" },
+
+  "btnOpenApp": "App öffnen",
+  "@btnOpenApp": { "description": "App öffnen-Button nach Setup" },
+
+  "fieldName": "Bezeichnung",
+  "@fieldName": { "description": "Feldbezeichnung: Artikelname" },
+
+  "fieldDescription": "Beschreibung",
+  "@fieldDescription": { "description": "Feldbezeichnung: Beschreibung" },
+
+  "fieldCategory": "Kategorie",
+  "@fieldCategory": { "description": "Feldbezeichnung: Kategorie" },
+
+  "fieldBarcode": "Barcode / QR-Code",
+  "@fieldBarcode": { "description": "Feldbezeichnung: Barcode" },
+
+  "fieldStock": "Bestand",
+  "@fieldStock": { "description": "Feldbezeichnung: Lagerbestand" },
+
+  "fieldLocation": "Standort",
+  "@fieldLocation": { "description": "Feldbezeichnung: Standort" },
+
+  "fieldExpiry": "Ablaufdatum (optional)",
+  "@fieldExpiry": { "description": "Feldbezeichnung: Ablaufdatum" },
+
+  "fieldApiUrl": "API-URL",
+  "@fieldApiUrl": { "description": "Feldbezeichnung: API-Basis-URL" },
+
+  "fieldApiKey": "API-Key",
+  "@fieldApiKey": { "description": "Feldbezeichnung: API-Schlüssel" },
+
+  "labelNoDate": "Kein Datum",
+  "@labelNoDate": { "description": "Platzhalter wenn kein Ablaufdatum gesetzt" },
+
+  "labelPieces": "{count} Stk.",
+  "@labelPieces": {
+    "description": "Stückzahl",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "labelItems": "{count} Artikel",
+  "@labelItems": {
+    "description": "Artikelanzahl",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "labelLocations": "{count} Standorte",
+  "@labelLocations": {
+    "description": "Standortanzahl",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "sectionLowStock": "Kritische Artikel",
+  "@sectionLowStock": { "description": "Dashboard-Abschnitt: Kritische Artikel" },
+
+  "sectionExpiring": "Bald ablaufend / Abgelaufen",
+  "@sectionExpiring": { "description": "Dashboard-Abschnitt: Ablaufende Artikel" },
+
+  "sectionOverview": "Übersicht",
+  "@sectionOverview": { "description": "Dashboard-Abschnitt: Übersicht" },
+
+  "bannerOffline": "Offline – Änderungen werden synchronisiert, sobald die Verbindung wiederhergestellt ist.",
+  "@bannerOffline": { "description": "Offline-Banner-Text" },
+
+  "bannerLowStock": "Bestand unter Mindestwert!",
+  "@bannerLowStock": { "description": "Low-Stock-Warnbanner" },
+
+  "bannerExpired": "Abgelaufen!",
+  "@bannerExpired": { "description": "Abgelaufen-Banner" },
+
+  "bannerExpiringSoon": "Läuft bald ab",
+  "@bannerExpiringSoon": { "description": "Bald-ablaufend-Badge" },
+
+  "syncPending": "{count} ausstehend",
+  "@syncPending": {
+    "description": "Anzahl ausstehender Sync-Operationen",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "deleteItemTitle": "Artikel löschen?",
+  "@deleteItemTitle": { "description": "Dialog-Titel: Artikel löschen" },
+
+  "deleteItemBody": "Diesen Artikel wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+  "@deleteItemBody": { "description": "Dialog-Text: Artikel löschen" },
+
+  "deleteLocationTitle": "Standort löschen?",
+  "@deleteLocationTitle": { "description": "Dialog-Titel: Standort löschen" },
+
+  "deleteLocationBody": "Diesen Standort wirklich löschen? Artikel an diesem Standort müssen zuerst umgezogen werden.",
+  "@deleteLocationBody": { "description": "Dialog-Text: Standort löschen" },
+
+  "barcodeAlreadyExists": "Barcode bereits vorhanden",
+  "@barcodeAlreadyExists": { "description": "Barcode-Match-Sheet Titel" },
+
+  "actionAddStock": "+1 Bestand",
+  "@actionAddStock": { "description": "Scan-Aktion: Bestand erhöhen" },
+
+  "actionSubtractStock": "-1 Bestand",
+  "@actionSubtractStock": { "description": "Scan-Aktion: Bestand verringern" },
+
+  "actionTransfer": "Transferieren",
+  "@actionTransfer": { "description": "Scan-Aktion: Standort wechseln" },
+
+  "actionNewLocation": "Neuer Standort",
+  "@actionNewLocation": { "description": "Scan-Aktion: Neuer Standort für Artikel" },
+
+  "actionCreateNew": "Trotzdem neu erstellen",
+  "@actionCreateNew": { "description": "Scan-Aktion: Neuen Artikel erstellen" },
+
+  "transferTitle": "Zu welchem Standort transferieren?",
+  "@transferTitle": { "description": "Transfer-Sheet Titel" },
+
+  "settingsSectionApi": "API-Verbindung",
+  "@settingsSectionApi": { "description": "Einstellungen-Abschnitt: API" },
+
+  "settingsSectionTheme": "Design",
+  "@settingsSectionTheme": { "description": "Einstellungen-Abschnitt: Design" },
+
+  "settingsSectionLanguage": "Sprache",
+  "@settingsSectionLanguage": { "description": "Einstellungen-Abschnitt: Sprache" },
+
+  "settingsSectionAccounts": "Konten",
+  "@settingsSectionAccounts": { "description": "Einstellungen-Abschnitt: Konten" },
+
+  "settingsSectionData": "Daten",
+  "@settingsSectionData": { "description": "Einstellungen-Abschnitt: Daten" },
+
+  "settingsManageAccounts": "Konten verwalten",
+  "@settingsManageAccounts": { "description": "Einstellungen: Konten verwalten" },
+
+  "settingsExportImport": "Exportieren / Importieren",
+  "@settingsExportImport": { "description": "Einstellungen: Export/Import" },
+
+  "themeSystem": "System",
+  "@themeSystem": { "description": "Theme-Option: Systemstandard" },
+
+  "themeLight": "Hell",
+  "@themeLight": { "description": "Theme-Option: Helles Design" },
+
+  "themeDark": "Dunkel",
+  "@themeDark": { "description": "Theme-Option: Dunkles Design" },
+
+  "languageGerman": "Deutsch",
+  "@languageGerman": { "description": "Sprache: Deutsch" },
+
+  "languageEnglish": "English",
+  "@languageEnglish": { "description": "Sprache: Englisch" },
+
+  "accountsTitle": "Konten",
+  "@accountsTitle": { "description": "Konten-Screen Titel" },
+
+  "accountsAdd": "Konto hinzufügen",
+  "@accountsAdd": { "description": "Button: Konto hinzufügen" },
+
+  "accountsActive": "Aktiv",
+  "@accountsActive": { "description": "Badge: Aktives Konto" },
+
+  "accountsSwitch": "Zu diesem Konto wechseln",
+  "@accountsSwitch": { "description": "Button: Konto wechseln" },
+
+  "accountsDelete": "Konto löschen",
+  "@accountsDelete": { "description": "Button: Konto löschen" },
+
+  "accountsDeleteConfirm": "Konto wirklich löschen?",
+  "@accountsDeleteConfirm": { "description": "Dialog: Konto löschen bestätigen" },
+
+  "accountNameField": "Kontoname",
+  "@accountNameField": { "description": "Feld: Kontoname" },
+
+  "exportTitle": "Exportieren / Importieren",
+  "@exportTitle": { "description": "Export-Screen Titel" },
+
+  "exportCsv": "CSV exportieren",
+  "@exportCsv": { "description": "Button: CSV exportieren" },
+
+  "exportCsvDesc": "Für Excel und andere Tabellenkalkulationen",
+  "@exportCsvDesc": { "description": "CSV-Export Beschreibung" },
+
+  "exportPdf": "PDF-Bericht exportieren",
+  "@exportPdf": { "description": "Button: PDF exportieren" },
+
+  "exportPdfDesc": "Druckbarer Inventarbericht",
+  "@exportPdfDesc": { "description": "PDF-Export Beschreibung" },
+
+  "importCsv": "CSV importieren",
+  "@importCsv": { "description": "Button: CSV importieren" },
+
+  "importCsvDesc": "Artikel aus CSV-Datei importieren",
+  "@importCsvDesc": { "description": "CSV-Import Beschreibung" },
+
+  "importPreviewTitle": "Vorschau",
+  "@importPreviewTitle": { "description": "Import-Vorschau Dialog Titel" },
+
+  "importConfirm": "Importieren",
+  "@importConfirm": { "description": "Import bestätigen" },
+
+  "importSuccess": "{created} erstellt, {updated} aktualisiert",
+  "@importSuccess": {
+    "description": "Import-Ergebnis",
+    "placeholders": {
+      "created": { "type": "int" },
+      "updated": { "type": "int" }
+    }
+  },
+
+  "errorSave": "Fehler beim Speichern.",
+  "@errorSave": { "description": "Fehlermeldung: Speichern" },
+
+  "errorDelete": "Fehler beim Löschen.",
+  "@errorDelete": { "description": "Fehlermeldung: Löschen" },
+
+  "errorConnection": "Verbindung fehlgeschlagen.",
+  "@errorConnection": { "description": "Fehlermeldung: Verbindung" },
+
+  "successSave": "Erfolgreich gespeichert.",
+  "@successSave": { "description": "Erfolgsmeldung: Gespeichert" },
+
+  "successDelete": "Erfolgreich gelöscht.",
+  "@successDelete": { "description": "Erfolgsmeldung: Gelöscht" },
+
+  "successTransfer": "Erfolgreich transferiert.",
+  "@successTransfer": { "description": "Erfolgsmeldung: Transfer" },
+
+  "successConnection": "Verbindung erfolgreich.",
+  "@successConnection": { "description": "Erfolgsmeldung: Verbindung" },
+
+  "setupTitle": "Storify – Inventarverwaltung",
+  "@setupTitle": { "description": "Setup-Screen Titel" },
+
+  "setupSubtitle": "Bitte gib deine API-URL und deinen API-Key ein, um die App zu konfigurieren.",
+  "@setupSubtitle": { "description": "Setup-Screen Untertitel" },
+
+  "noItemsFound": "Keine Artikel gefunden.",
+  "@noItemsFound": { "description": "Leer-Zustand: Keine Artikel" },
+
+  "noLocationsFound": "Keine Standorte gefunden.",
+  "@noLocationsFound": { "description": "Leer-Zustand: Keine Standorte" },
+
+  "searchHint": "Suchen...",
+  "@searchHint": { "description": "Suchfeld Platzhalter" },
+
+  "filterAll": "Alle",
+  "@filterAll": { "description": "Filter: Alle Kategorien" },
+
+  "newItem": "Neuer Artikel",
+  "@newItem": { "description": "Neuen Artikel erstellen" },
+
+  "editItem": "Artikel bearbeiten",
+  "@editItem": { "description": "Artikel bearbeiten" },
+
+  "newLocation": "Neuer Standort",
+  "@newLocation": { "description": "Neuen Standort erstellen" },
+
+  "editLocation": "Standort bearbeiten",
+  "@editLocation": { "description": "Standort bearbeiten" },
+
+  "scanBarcode": "Barcode scannen",
+  "@scanBarcode": { "description": "Button: Barcode scannen" },
+
+  "scanInstruction": "Barcode oder QR-Code in den Rahmen halten",
+  "@scanInstruction": { "description": "Scanner-Hinweistext" },
+
+  "notificationLowStockTitle": "Niedriger Bestand",
+  "@notificationLowStockTitle": { "description": "Benachrichtigungs-Titel: Niedriger Bestand" },
+
+  "notificationLowStockBody": "Nur noch {count} Stück verfügbar",
+  "@notificationLowStockBody": {
+    "description": "Benachrichtigungs-Text: Bestand",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "statArticles": "Artikel",
+  "@statArticles": { "description": "Statistik-Karte: Artikelanzahl" },
+
+  "statLocations": "Standorte",
+  "@statLocations": { "description": "Statistik-Karte: Standortanzahl" },
+
+  "statCritical": "Kritisch",
+  "@statCritical": { "description": "Statistik-Karte: Kritische Artikel" },
+
+  "sectionQuickActions": "Schnellaktionen",
+  "@sectionQuickActions": { "description": "Dashboard-Abschnitt: Schnellaktionen" },
+
+  "sectionTopLocations": "Top Standorte",
+  "@sectionTopLocations": { "description": "Dashboard-Abschnitt: Top Standorte" },
+
+  "sectionRecent": "Zuletzt im Inventar",
+  "@sectionRecent": { "description": "Dashboard-Abschnitt: Zuletzt hinzugefügt" },
+
+  "noCriticalItems": "Keine kritischen Artikel – alles im grünen Bereich.",
+  "@noCriticalItems": { "description": "Leer-Zustand: Keine kritischen Artikel" },
+
+  "noExpiringItems": "Keine ablaufenden Artikel – alles in Ordnung.",
+  "@noExpiringItems": { "description": "Leer-Zustand: Keine ablaufenden Artikel" },
+
+  "actionScan": "Scannen",
+  "@actionScan": { "description": "Button: Scannen" },
+
+  "settingsTitle": "Einstellungen",
+  "@settingsTitle": { "description": "Settings-Screen Titel" },
+
+  "settingsAbout": "Über die App",
+  "@settingsAbout": { "description": "Einstellungen: Über die App" },
+
+  "settingsVersion": "Version",
+  "@settingsVersion": { "description": "Einstellungen: Versionsbezeichnung" },
+
+  "settingsApiUrl": "API-Basis-URL",
+  "@settingsApiUrl": { "description": "Einstellungen: API-URL Feldbezeichnung" },
+
+  "settingsApiKey": "API-Key",
+  "@settingsApiKey": { "description": "Einstellungen: API-Key Feldbezeichnung" },
+
+  "inventoryTitle": "Inventar",
+  "@inventoryTitle": { "description": "Inventar-Screen Titel" },
+
+  "locationsTitle": "Standorte",
+  "@locationsTitle": { "description": "Standorte-Screen Titel" },
+
+  "locationItemCount": "{count} Artikel",
+  "@locationItemCount": {
+    "description": "Anzahl Artikel an einem Standort",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "expiresOn": "Läuft ab am {date}",
+  "@expiresOn": {
+    "description": "Ablaufdatum-Zeile: läuft ab",
+    "placeholders": { "date": { "type": "String" } }
+  },
+
+  "expiredOn": "Abgelaufen am {date}",
+  "@expiredOn": {
+    "description": "Ablaufdatum-Zeile: abgelaufen",
+    "placeholders": { "date": { "type": "String" } }
+  },
+
+  "sectionExport": "Exportieren",
+  "@sectionExport": { "description": "Export-Screen Abschnitt: Export" },
+
+  "sectionImport": "Importieren",
+  "@sectionImport": { "description": "Export-Screen Abschnitt: Import" },
+
+  "importFoundItems": "{count} Artikel gefunden.",
+  "@importFoundItems": {
+    "description": "Import-Vorschau: Anzahl gefundener Artikel",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "importMoreItems": "... und {count} weitere.",
+  "@importMoreItems": {
+    "description": "Import-Vorschau: weitere Artikel",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "savedAs": "Gespeichert: {name}",
+  "@savedAs": {
+    "description": "Erfolgsmeldung nach Datei-Speicherung",
+    "placeholders": { "name": { "type": "String" } }
+  },
+
+  "offlineBannerShort": "Keine Verbindung – lokale Daten werden angezeigt",
+  "@offlineBannerShort": { "description": "Kurzer Offline-Banner auf dem Dashboard" },
+
+  "noItemsYet": "Noch keine Artikel erfasst.",
+  "@noItemsYet": { "description": "Dashboard: Noch keine Artikel" },
+
+  "noLocationsYet": "Noch keine Standorte erfasst.",
+  "@noLocationsYet": { "description": "Dashboard: Noch keine Standorte" },
+
+  "btnSaveReload": "Speichern & Neu laden",
+  "@btnSaveReload": { "description": "Einstellungen: Speichern und Daten neu laden" },
+
+  "noItemsAtLocation": "Keine Artikel an diesem Standort.",
+  "@noItemsAtLocation": { "description": "Leer-Zustand: Keine Artikel am Standort" },
+
+  "fieldLocationName": "Standortbezeichnung",
+  "@fieldLocationName": { "description": "Feldbezeichnung: Name des Standorts" },
+
+  "searchItemHint": "Artikel suchen…",
+  "@searchItemHint": { "description": "Suchfeld Platzhalter im Inventar" },
+
+  "searchLocationHint": "Standort suchen…",
+  "@searchLocationHint": { "description": "Suchfeld Platzhalter in Standortliste" },
+
+  "chooseCategory": "Kategorie wählen",
+  "@chooseCategory": { "description": "Filter-Sheet Titel: Kategorie wählen" },
+
+  "chooseLocation": "Standort wählen",
+  "@chooseLocation": { "description": "Filter-Sheet Titel: Standort wählen" },
+
+  "checkingConnection": "Prüfe…",
+  "@checkingConnection": { "description": "Verbindungstest läuft" },
+
+  "fieldRequired": "Pflichtfeld",
+  "@fieldRequired": { "description": "Validierungsfehler: Pflichtfeld" },
+
+  "mustSelectLocation": "Bitte Standort auswählen",
+  "@mustSelectLocation": { "description": "Validierungsfehler: Standort fehlt" },
+
+  "bannerExpiredItem": "Artikel ist abgelaufen!",
+  "@bannerExpiredItem": { "description": "Banner: Artikel abgelaufen" },
+
+  "bannerLowStockDetail": "Niedriger Bestand – unter {threshold} Einheiten",
+  "@bannerLowStockDetail": {
+    "description": "Banner: Niedriger Bestand mit Schwellenwert",
+    "placeholders": { "threshold": { "type": "int" } }
+  },
+
+  "deleteItemConfirm": "«{name}» wird unwiderruflich gelöscht.",
+  "@deleteItemConfirm": {
+    "description": "Bestätigungstext: Artikel löschen",
+    "placeholders": { "name": { "type": "String" } }
+  },
+
+  "noOtherLocations": "Keine anderen Standorte vorhanden.",
+  "@noOtherLocations": { "description": "Transfer-Sheet: Keine anderen Standorte" },
+
+  "errorSaveTitle": "Fehler beim Speichern",
+  "@errorSaveTitle": { "description": "Dialog-Titel: Fehler beim Speichern" },
+
+  "deleteLocationConfirm": "«{name}» wird gelöscht. Artikel mit diesem Standort können nicht mehr zugeordnet werden.",
+  "@deleteLocationConfirm": {
+    "description": "Bestätigungstext: Standort löschen",
+    "placeholders": { "name": { "type": "String" } }
+  },
+
+  "transferQuantityTitle": "Menge wählen",
+  "@transferQuantityTitle": { "description": "Dialog-Titel: Transfermenge auswählen" },
+
+  "transferQuantityHint": "Wie viele möchtest du transferieren?",
+  "@transferQuantityHint": { "description": "Dialog-Untertitel: Menge bei Transfer" },
+
+  "transferConfirmBtn": "Transferieren",
+  "@transferConfirmBtn": { "description": "Button: Transfer bestätigen" },
+
+  "toastSaved": "Gespeichert",
+  "@toastSaved": { "description": "Toast: Gespeichert" },
+
+  "toastDeleted": "Gelöscht",
+  "@toastDeleted": { "description": "Toast: Gelöscht" },
+
+  "toastTransferred": "Transferiert",
+  "@toastTransferred": { "description": "Toast: Transferiert" },
+
+  "toastStockUpdated": "Bestand aktualisiert",
+  "@toastStockUpdated": { "description": "Toast: Bestand geändert" },
+
+  "toastError": "Fehler",
+  "@toastError": { "description": "Toast: Fehler" },
+
+  "toastAccountSwitched": "Konto gewechselt",
+  "@toastAccountSwitched": { "description": "Toast: Konto gewechselt" },
+
+  "toastAccountSaved": "Konto gespeichert",
+  "@toastAccountSaved": { "description": "Toast: Konto gespeichert" },
+
+  "toastImportResult": "{created} neu · {updated} aktualisiert",
+  "@toastImportResult": {
+    "description": "Toast: Import-Ergebnis",
+    "placeholders": {
+      "created": { "type": "int" },
+      "updated": { "type": "int" }
+    }
+  },
+
+  "toastImportErrors": "{count} Fehler",
+  "@toastImportErrors": {
+    "description": "Toast: Import-Fehler",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "setupTagline": "Inventarverwaltung",
+  "@setupTagline": { "description": "Setup-Screen Tagline unter dem Logo" },
+
+  "setupSectionTitle": "Verbindung einrichten",
+  "@setupSectionTitle": { "description": "Setup-Screen Abschnittstitel" },
+
+  "setupUrlHint": "https://deine-domain.ch/api",
+  "@setupUrlHint": { "description": "Platzhalter für API-URL" },
+
+  "setupValidUrl": "Bitte URL eingeben",
+  "@setupValidUrl": { "description": "Validierungsfehler: URL fehlt" },
+
+  "setupValidUrlHttp": "URL muss mit http:// oder https:// beginnen",
+  "@setupValidUrlHttp": { "description": "Validierungsfehler: URL-Schema ungültig" },
+
+  "setupValidKey": "Bitte API-Key eingeben",
+  "@setupValidKey": { "description": "Validierungsfehler: API-Key fehlt" },
+
+  "setupSuccessDetail": "Verbindung erfolgreich. API erreichbar.",
+  "@setupSuccessDetail": { "description": "Erfolgsmeldung im Setup-Screen" },
+
+  "setupErrorInvalidKey": "Ungültiger API-Key. Bitte Schlüssel prüfen.",
+  "@setupErrorInvalidKey": { "description": "Fehlermeldung: API-Key ungültig" },
+
+  "setupInfoText": "URL und API-Key können jederzeit unter Einstellungen geändert werden.",
+  "@setupInfoText": { "description": "Info-Hinweis im Setup-Screen" }
+}
