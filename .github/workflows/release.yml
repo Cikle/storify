@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,9 +31,17 @@ jobs:
         run: flutter pub get
         working-directory: storify
 
+      - name: Decode keystore
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > storify/android/app/storify-release.jks
+
       - name: Build APK
         run: flutter build apk --release
         working-directory: storify
+        env:
+          KEYSTORE_PATH: android/app/storify-release.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
