@@ -8,16 +8,17 @@ class UpdateService {
   static final UpdateService instance = UpdateService._();
 
   static const String _githubApiUrl =
-      'https://api.github.com/repos/cikle/storify/releases/latest';
-  static const String _releasesPageUrl =
-      'https://github.com/cikle/storify/releases/latest';
+      'https://api.github.com/repos/Cikle/storify/releases/latest';
+
+  static String _apkDownloadUrl(String version) =>
+      'https://github.com/Cikle/storify/releases/download/v$version/storify.apk';
 
   /// Returns the latest version string if it is newer than the installed version,
   /// otherwise null. All errors return null silently.
   Future<String?> fetchLatestVersionIfNewer() async {
     try {
       final info = await PackageInfo.fromPlatform();
-      final currentVersion = info.version; // read automatically from pubspec.yaml
+      final currentVersion = info.version;
 
       final response = await http.get(
         Uri.parse(_githubApiUrl),
@@ -35,10 +36,10 @@ class UpdateService {
     }
   }
 
-  Future<void> openReleasesPage() async {
+  Future<void> downloadUpdate(String version) async {
     try {
       await launchUrl(
-        Uri.parse(_releasesPageUrl),
+        Uri.parse(_apkDownloadUrl(version)),
         mode: LaunchMode.externalApplication,
       );
     } catch (_) {}
@@ -56,7 +57,6 @@ class UpdateService {
   }
 
   List<int>? _parse(String v) {
-    // Strip build number (e.g. "1.0.0+1" → "1.0.0")
     final base = v.split('+').first;
     final parts = base.split('.');
     if (parts.length != 3) return null;

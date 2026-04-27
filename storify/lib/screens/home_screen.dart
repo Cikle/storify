@@ -95,39 +95,62 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   }
 
   void _showUpdateDialog(String newVersion) {
+    const yellow = Color(0xFFF59E0B);
     showDialog<void>(
       context: context,
       barrierDismissible: true,
       builder: (ctx) => AlertDialog(
         backgroundColor: context.colorCard,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: Text(
-          'Update available',
-          style: GoogleFonts.inter(
-              color: context.colorTextPrimary, fontWeight: FontWeight.w700),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        titlePadding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+        contentPadding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+        actionsPadding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: yellow.withAlpha(30),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(Icons.system_update_outlined,
+                  color: yellow, size: 20),
+            ),
+            const SizedBox(width: 12),
+            Text(
+              'Update available',
+              style: GoogleFonts.inter(
+                color: yellow,
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+              ),
+            ),
+          ],
         ),
         content: Text(
-          'Version $newVersion is available.\nOpen the release page to download?',
+          'Version $newVersion is ready to download.',
           style: GoogleFonts.inter(color: context.colorTextSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(
-              'Later',
-              style: GoogleFonts.inter(color: context.colorTextMuted),
-            ),
+            child: Text('Later',
+                style: GoogleFonts.inter(color: context.colorTextMuted)),
           ),
-          ElevatedButton(
+          ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: yellow,
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+            ),
             onPressed: () {
               Navigator.of(ctx).pop();
-              UpdateService.instance.openReleasesPage();
+              UpdateService.instance.downloadUpdate(newVersion);
             },
-            child: Text(
-              'Download',
-              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-            ),
+            icon: const Icon(Icons.download_outlined, size: 16),
+            label: Text('Download',
+                style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
           ),
         ],
       ),

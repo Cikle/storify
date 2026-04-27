@@ -10,6 +10,7 @@ import 'package:storify/screens/accounts_screen.dart';
 import 'package:storify/screens/export_screen.dart';
 import 'package:storify/services/api_service.dart';
 import 'package:storify/services/storage_service.dart';
+import 'package:storify/services/update_service.dart';
 import 'package:storify/l10n/app_localizations.dart';
 import 'package:storify/utils/constants.dart';
 
@@ -30,6 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String? _statusMessage;
   bool _statusIsError = false;
   String _appVersion = '';
+  String? _availableVersion;
 
   @override
   void initState() {
@@ -39,6 +41,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _keyCtrl = TextEditingController(text: storage.getApiKey());
     PackageInfo.fromPlatform().then((info) {
       if (mounted) setState(() => _appVersion = info.version);
+    });
+    UpdateService.instance.fetchLatestVersionIfNewer().then((v) {
+      if (mounted && v != null) setState(() => _availableVersion = v);
     });
   }
 
@@ -185,6 +190,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // ── About ────────────────────────────────────────────────────────
           _buildSectionLabel(l.settingsAbout),
           const SizedBox(height: 8),
+          if (_availableVersion != null) ...[
+            _buildUpdateBanner(_availableVersion!),
+            const SizedBox(height: 8),
+          ],
           _buildInfoCard(),
         ],
       ),
@@ -368,6 +377,54 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           );
         }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildUpdateBanner(String version) {
+    const yellow = Color(0xFFF59E0B);
+    return Material(
+      color: yellow.withAlpha(20),
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        onTap: () => UpdateService.instance.downloadUpdate(version),
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: yellow.withAlpha(120)),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.system_update_outlined, color: yellow, size: 22),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Update available — v$version',
+                      style: GoogleFonts.inter(
+                        color: yellow,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      'Tap to download',
+                      style: GoogleFonts.inter(
+                        color: yellow.withAlpha(180),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.download_outlined, color: yellow.withAlpha(180), size: 20),
+            ],
+          ),
+        ),
       ),
     );
   }
