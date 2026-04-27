@@ -302,8 +302,17 @@ class _SetupScreenState extends State<SetupScreen> {
 
       await ApiService.checkConnectionWith(url, key);
 
-      await storage.setApiBaseUrl(url);
-      await storage.setApiKey(key);
+      final accounts = storage.loadAccounts();
+      if (accounts.isEmpty) {
+        await storage.addAccount('Default', url, key);
+      } else {
+        final active = storage.getActiveAccount();
+        if (active != null) {
+          await storage.updateAccount(active['name'] as String, url, key);
+        } else {
+          await storage.addAccount('Default', url, key);
+        }
+      }
 
       if (mounted) {
         setState(() {

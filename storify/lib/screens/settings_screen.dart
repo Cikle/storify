@@ -430,8 +430,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     try {
       final cleanUrl = url.replaceAll(RegExp(r'/$'), '');
       await ApiService.checkConnectionWith(cleanUrl, key);
-      await storage.setApiBaseUrl(cleanUrl);
-      await storage.setApiKey(key);
+
+      final active = storage.getActiveAccount();
+      if (active != null) {
+        await storage.updateAccount(active['name'] as String, cleanUrl, key);
+      } else {
+        await storage.addAccount('Default', cleanUrl, key);
+      }
       if (mounted) {
         setState(() {
           _connectionOk = true;
