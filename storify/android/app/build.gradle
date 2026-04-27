@@ -41,6 +41,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
         release {
             def keystorePath = System.getenv("KEYSTORE_PATH")
             signingConfig = keystorePath ? signingConfigs.release : signingConfigs.debug
