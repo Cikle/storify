@@ -173,5 +173,25 @@
   "setupValidKey": "Please enter an API key",
   "setupSuccessDetail": "Connection successful. API reachable.",
   "setupErrorInvalidKey": "Invalid API key. Please check your key.",
-  "setupInfoText": "URL and API key can be changed anytime in Settings."
+  "setupInfoText": "URL and API key can be changed anytime in Settings.",
+
+  "fieldUnit": "Unit (optional)",
+  "fieldCriticalThreshold": "Critical quantity (optional)",
+  "fieldWarningDays": "Warn before expiry (days)",
+  "fieldPackSize": "Pieces per unit",
+  "fieldPhoto": "Photo",
+  "btnAddPhoto": "Add photo",
+  "btnRemovePhoto": "Remove photo",
+  "labelNoUnit": "No unit",
+  "days": "days",
+  "transferItemBtn": "Transfer",
+  "transferSelectLocation": "Select target location",
+  "transferSelectQuantity": "Select quantity",
+  "transferAll": "All",
+
+  "toastPhotoUploadFailed": "Item saved, but photo upload failed.",
+
+  "unsavedChangesTitle": "Unsaved changes",
+  "unsavedChangesBody": "You have unsaved changes. Discard them?",
+  "btnDiscard": "Discard"
 }

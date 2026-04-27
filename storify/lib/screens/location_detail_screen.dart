@@ -34,6 +34,7 @@ class LocationDetailScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'location_detail_fab',
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
@@ -129,14 +130,16 @@ class LocationDetailScreen extends StatelessWidget {
                       fontSize: 15,
                     ),
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    item.category,
-                    style: GoogleFonts.inter(
-                      color: context.colorTextSecondary,
-                      fontSize: 12,
+                  if (item.category != null && item.category!.isNotEmpty) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      item.category!,
+                      style: GoogleFonts.inter(
+                        color: context.colorTextSecondary,
+                        fontSize: 12,
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
             ),

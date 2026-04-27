@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:storify/models/item.dart';
 import 'package:storify/models/location.dart';
@@ -125,6 +126,32 @@ class ApiService {
   Future<void> deleteItem(int id) async {
     final response = await http
         .delete(Uri.parse('$_baseUrl/items/$id/'), headers: _headers)
+        .timeout(const Duration(seconds: 10));
+    _handleResponse(response);
+  }
+
+  // Upload or replace photo for an item; returns the relative photo_url from server
+  Future<String> uploadItemPhoto(int id, String filePath) async {
+    final uri = Uri.parse('$_baseUrl/items/$id/photo/');
+    final request = http.MultipartRequest('POST', uri);
+    request.headers.addAll({
+      'Accept': 'application/json',
+      'X-Api-Key': _storage.getApiKey(),
+    });
+    // Read bytes directly — avoids content:// URI issues on Android
+    final bytes = await File(filePath).readAsBytes();
+    final filename = filePath.split(Platform.pathSeparator).last;
+    request.files.add(http.MultipartFile.fromBytes('photo', bytes, filename: filename));
+    final streamedResponse = await request.send().timeout(const Duration(seconds: 30));
+    final response = await http.Response.fromStream(streamedResponse);
+    final data = _handleResponse(response) as Map<String, dynamic>;
+    return data['photo_url'] as String;
+  }
+
+  // Remove photo from an item
+  Future<void> deleteItemPhoto(int id) async {
+    final response = await http
+        .delete(Uri.parse('$_baseUrl/items/$id/photo/'), headers: _headers)
         .timeout(const Duration(seconds: 10));
     _handleResponse(response);
   }

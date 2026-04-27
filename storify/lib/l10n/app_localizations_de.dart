@@ -558,4 +558,57 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get setupInfoText =>
       'URL und API-Key können jederzeit unter Einstellungen geändert werden.';
+
+  @override
+  String get fieldUnit => 'Einheit (optional)';
+
+  @override
+  String get fieldCriticalThreshold => 'Kritische Menge (optional)';
+
+  @override
+  String get fieldWarningDays => 'Warnung vor Ablauf (Tage)';
+
+  @override
+  String get fieldPackSize => 'Stück pro Einheit';
+
+  @override
+  String get fieldPhoto => 'Foto';
+
+  @override
+  String get btnAddPhoto => 'Foto hinzufügen';
+
+  @override
+  String get btnRemovePhoto => 'Foto entfernen';
+
+  @override
+  String get labelNoUnit => 'Keine Einheit';
+
+  @override
+  String get days => 'Tage';
+
+  @override
+  String get transferItemBtn => 'Transferieren';
+
+  @override
+  String get transferSelectLocation => 'Zielstandort wählen';
+
+  @override
+  String get transferSelectQuantity => 'Menge wählen';
+
+  @override
+  String get transferAll => 'Alle';
+
+  @override
+  String get toastPhotoUploadFailed =>
+      'Artikel gespeichert, Foto-Upload fehlgeschlagen.';
+
+  @override
+  String get unsavedChangesTitle => 'Ungespeicherte Änderungen';
+
+  @override
+  String get unsavedChangesBody =>
+      'Du hast ungespeicherte Änderungen. Verwerfen?';
+
+  @override
+  String get btnDiscard => 'Verwerfen';
 }

@@ -114,7 +114,7 @@ class ExportService {
             oddRowDecoration: const pw.BoxDecoration(color: lightGray),
             data: items.map((item) => [
               item.name,
-              item.category,
+              item.category ?? '',
               item.locationName ?? '',
               '${item.quantity} pcs.',
               item.expiryDate != null
@@ -204,7 +204,7 @@ class ExportService {
             oddRowDecoration: const pw.BoxDecoration(color: lightGray),
             data: items.map((item) => [
               item.name,
-              item.category,
+              item.category ?? '',
               item.locationName ?? '',
               '${item.quantity} pcs.',
               item.expiryDate != null

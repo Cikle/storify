@@ -563,5 +563,56 @@
   "@setupErrorInvalidKey": { "description": "Fehlermeldung: API-Key ungültig" },
 
   "setupInfoText": "URL und API-Key können jederzeit unter Einstellungen geändert werden.",
-  "@setupInfoText": { "description": "Info-Hinweis im Setup-Screen" }
+  "@setupInfoText": { "description": "Info-Hinweis im Setup-Screen" },
+
+  "fieldUnit": "Einheit (optional)",
+  "@fieldUnit": { "description": "Feldbezeichnung: Einheit" },
+
+  "fieldCriticalThreshold": "Kritische Menge (optional)",
+  "@fieldCriticalThreshold": { "description": "Feldbezeichnung: Kritische Menge" },
+
+  "fieldWarningDays": "Warnung vor Ablauf (Tage)",
+  "@fieldWarningDays": { "description": "Feldbezeichnung: Warntage vor Ablauf" },
+
+  "fieldPackSize": "Stück pro Einheit",
+  "@fieldPackSize": { "description": "Feldbezeichnung: Stück pro Einheit" },
+
+  "fieldPhoto": "Foto",
+  "@fieldPhoto": { "description": "Feldbezeichnung: Foto" },
+
+  "btnAddPhoto": "Foto hinzufügen",
+  "@btnAddPhoto": { "description": "Button: Foto hinzufügen" },
+
+  "btnRemovePhoto": "Foto entfernen",
+  "@btnRemovePhoto": { "description": "Button: Foto entfernen" },
+
+  "labelNoUnit": "Keine Einheit",
+  "@labelNoUnit": { "description": "Dropdown-Option: Keine Einheit" },
+
+  "days": "Tage",
+  "@days": { "description": "Einheit: Tage" },
+
+  "transferItemBtn": "Transferieren",
+  "@transferItemBtn": { "description": "Button: Artikel transferieren" },
+
+  "transferSelectLocation": "Zielstandort wählen",
+  "@transferSelectLocation": { "description": "Transfer-Sheet: Standort wählen" },
+
+  "transferSelectQuantity": "Menge wählen",
+  "@transferSelectQuantity": { "description": "Transfer-Sheet: Menge wählen" },
+
+  "transferAll": "Alle",
+  "@transferAll": { "description": "Transfer-Sheet: Alle transferieren" },
+
+  "toastPhotoUploadFailed": "Artikel gespeichert, Foto-Upload fehlgeschlagen.",
+  "@toastPhotoUploadFailed": { "description": "Toast: Foto-Upload nach Speichern fehlgeschlagen" },
+
+  "unsavedChangesTitle": "Ungespeicherte Änderungen",
+  "@unsavedChangesTitle": { "description": "Dialog: Titel ungespeicherte Änderungen" },
+
+  "unsavedChangesBody": "Du hast ungespeicherte Änderungen. Verwerfen?",
+  "@unsavedChangesBody": { "description": "Dialog: Text ungespeicherte Änderungen" },
+
+  "btnDiscard": "Verwerfen",
+  "@btnDiscard": { "description": "Button: Änderungen verwerfen" }
 }

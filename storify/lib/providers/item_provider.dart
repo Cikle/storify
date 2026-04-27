@@ -49,7 +49,7 @@ class ItemProvider extends ChangeNotifier {
     return _items.where((item) {
       final matchQuery = query.isEmpty ||
           item.name.toLowerCase().contains(query.toLowerCase()) ||
-          item.category.toLowerCase().contains(query.toLowerCase());
+          (item.category?.toLowerCase().contains(query.toLowerCase()) ?? false);
       final matchCategory =
           category == null || item.category == category;
       final matchLocation =
@@ -60,7 +60,7 @@ class ItemProvider extends ChangeNotifier {
   }
 
   List<String> get categories =>
-      _items.map((i) => i.category).toSet().toList()..sort();
+      _items.map((i) => i.category).whereType<String>().toSet().toList()..sort();
 
   // Show cache first, then refresh from API in background (US-6)
   Future<void> loadItems({bool silent = false}) async {
@@ -267,7 +267,7 @@ class ItemProvider extends ChangeNotifier {
         // Merge: add quantity to existing item
         await updateItem(existing.id, existing.copyWith(quantity: existing.quantity + qty));
       } else {
-        // No match: create new item at target
+        // No match: create new item at target, carrying all fields from source
         await createItem(Item(
           id: 0,
           name: source.name,
@@ -278,6 +278,11 @@ class ItemProvider extends ChangeNotifier {
           locationId: targetLocationId,
           locationName: targetLocationName,
           expiryDate: source.expiryDate,
+          unit: source.unit,
+          criticalThreshold: source.criticalThreshold,
+          warningDays: source.warningDays,
+          packSize: source.packSize,
+          photoUrl: source.photoUrl,
         ));
       }
     }
@@ -298,5 +303,10 @@ class ItemProvider extends ChangeNotifier {
     'location_name': i.locationName,
     if (i.expiryDate != null)
       'expiry_date': i.expiryDate!.toIso8601String().substring(0, 10),
+    if (i.unit != null) 'unit': i.unit,
+    if (i.criticalThreshold != null) 'critical_threshold': i.criticalThreshold,
+    if (i.warningDays != null) 'warning_days': i.warningDays,
+    if (i.packSize != null) 'pack_size': i.packSize,
+    if (i.photoUrl != null) 'photo_url': i.photoUrl,
   };
 }

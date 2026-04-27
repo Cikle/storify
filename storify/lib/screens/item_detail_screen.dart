@@ -3,8 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:storify/models/item.dart';
+import 'package:storify/models/location.dart';
 import 'package:storify/providers/item_provider.dart';
+import 'package:storify/providers/location_provider.dart';
 import 'package:storify/screens/item_form_screen.dart';
+import 'package:storify/services/storage_service.dart';
 import 'package:storify/l10n/app_localizations.dart';
 import 'package:storify/utils/constants.dart';
 
@@ -45,7 +48,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     } catch (e) {
       if (mounted) {
         setState(() => _quantity = widget.item.quantity);
-        showAppSnackBar(context, AppLocalizations.of(context)!.toastError, isError: true);
+        showAppSnackBar(context, AppLocalizations.of(context)!.toastError,
+            isError: true);
       }
     } finally {
       if (mounted) setState(() => _adjusting = false);
@@ -87,25 +91,85 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          // Photo header
+          if (liveItem.photoUrl != null && liveItem.photoUrl!.isNotEmpty)
+            _buildPhotoHeader(liveItem),
           if (liveItem.isExpired) _buildExpiryBanner(expired: true),
           if (!liveItem.isExpired && liveItem.isExpiringSoon)
             _buildExpiryBanner(expired: false),
-          if (liveItem.isLowStock) _buildLowStockBanner(),
+          if (liveItem.isLowStock) _buildLowStockBanner(liveItem),
           _buildHeaderCard(liveItem),
           const SizedBox(height: 12),
-          _buildQuantityCard(),
+          _buildQuantityCard(liveItem),
           const SizedBox(height: 12),
           _buildDetailCard(liveItem),
+          const SizedBox(height: 12),
+          _buildTransferButton(liveItem),
+          const SizedBox(height: 24),
         ],
+      ),
+    );
+  }
+
+  Widget _buildPhotoHeader(Item item) {
+    final base = context
+        .read<StorageService>()
+        .getApiBaseUrl()
+        .replaceAll(RegExp(r'/api/?$'), '');
+    final url = '$base/${item.photoUrl}';
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: GestureDetector(
+        onTap: () => showDialog(
+          context: context,
+          builder: (ctx) => Dialog(
+            backgroundColor: Colors.black,
+            insetPadding: EdgeInsets.zero,
+            child: Stack(
+              children: [
+                Center(
+                  child: InteractiveViewer(
+                    child: Image.network(url, fit: BoxFit.contain),
+                  ),
+                ),
+                Positioned(
+                  top: 16,
+                  right: 16,
+                  child: IconButton(
+                    icon: const Icon(Icons.close, color: Colors.white),
+                    onPressed: () => Navigator.pop(ctx),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.network(
+            url,
+            height: 200,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => Container(
+              height: 200,
+              decoration: BoxDecoration(
+                color: context.colorCard,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: context.colorBorder),
+              ),
+              child: Icon(Icons.broken_image_outlined,
+                  color: context.colorTextMuted, size: 48),
+            ),
+          ),
+        ),
       ),
     );
   }
 
   Widget _buildExpiryBanner({required bool expired}) {
     final color = expired ? AppColors.error : AppColors.warning;
-    final bg = expired
-        ? AppColors.error.withAlpha(20)
-        : context.colorLowStockBg;
+    final bg = expired ? AppColors.error.withAlpha(20) : context.colorLowStockBg;
     final icon = expired ? Icons.error_outline : Icons.schedule_outlined;
     final l = AppLocalizations.of(context)!;
     final label = expired ? l.bannerExpiredItem : l.bannerExpiringSoon;
@@ -134,7 +198,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     );
   }
 
-  Widget _buildLowStockBanner() {
+  Widget _buildLowStockBanner(Item item) {
+    final threshold = item.criticalThreshold ?? kLowStockThreshold;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -148,7 +213,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           const Icon(Icons.warning_amber, color: AppColors.warning, size: 18),
           const SizedBox(width: 10),
           Text(
-            AppLocalizations.of(context)!.bannerLowStockDetail(kLowStockThreshold),
+            AppLocalizations.of(context)!.bannerLowStockDetail(threshold),
             style: GoogleFonts.inter(
               color: AppColors.warning,
               fontSize: 13,
@@ -161,7 +226,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   }
 
   Widget _buildHeaderCard(Item item) {
-    final color = _categoryColor(item.category);
+    final color = _categoryColor(item.category ?? '');
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -178,7 +243,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               color: color.withAlpha(30),
               shape: BoxShape.circle,
             ),
-            child: Icon(_categoryIcon(item.category), color: color, size: 26),
+            child: Icon(_categoryIcon(item.category ?? ''), color: color, size: 26),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -196,9 +261,11 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    _Chip(label: item.category, color: color),
+                    if (item.category != null && item.category!.isNotEmpty)
+                      _Chip(label: item.category!, color: color),
                     if (item.locationName != null) ...[
-                      const SizedBox(width: 6),
+                      if (item.category != null && item.category!.isNotEmpty)
+                        const SizedBox(width: 6),
                       _Chip(
                         label: item.locationName!,
                         color: context.colorTextSecondary,
@@ -214,8 +281,9 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     );
   }
 
-  Widget _buildQuantityCard() {
-    final isLow = _quantity < kLowStockThreshold;
+  Widget _buildQuantityCard(Item item) {
+    final threshold = item.criticalThreshold ?? kLowStockThreshold;
+    final isLow = _quantity < threshold;
     final color = isLow ? AppColors.warning : AppColors.primary;
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
@@ -229,12 +297,26 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            AppLocalizations.of(context)!.fieldStock,
-            style: GoogleFonts.inter(
-              color: context.colorTextSecondary,
-              fontSize: 13,
-            ),
+          Row(
+            children: [
+              Text(
+                AppLocalizations.of(context)!.fieldStock,
+                style: GoogleFonts.inter(
+                  color: context.colorTextSecondary,
+                  fontSize: 13,
+                ),
+              ),
+              if (item.unit != null) ...[
+                const SizedBox(width: 6),
+                Text(
+                  item.unit!,
+                  style: GoogleFonts.inter(
+                    color: context.colorTextMuted,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ],
           ),
           const SizedBox(height: 12),
           Row(
@@ -267,6 +349,19 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               ),
             ],
           ),
+          if (item.packSize != null && item.packSize! > 1)
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Center(
+                child: Text(
+                  '= ${_quantity * item.packSize!} ${_subUnit(item)}',
+                  style: GoogleFonts.inter(
+                    color: context.colorTextMuted,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ),
           if (_adjusting)
             Padding(
               padding: const EdgeInsets.only(top: 8),
@@ -274,8 +369,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 child: SizedBox(
                   width: 16,
                   height: 16,
-                  child: CircularProgressIndicator(
-                      strokeWidth: 2, color: color),
+                  child: CircularProgressIndicator(strokeWidth: 2, color: color),
                 ),
               ),
             ),
@@ -284,7 +378,14 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     );
   }
 
+  String _subUnit(Item item) {
+    // If unit is Packung, sub-unit is typically Stück unless we know better
+    if (item.unit == 'Packung') return 'Stk.';
+    return 'Stk.';
+  }
+
   Widget _buildDetailCard(Item item) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       decoration: BoxDecoration(
         color: context.colorCard,
@@ -293,25 +394,48 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
       ),
       child: Column(
         children: [
-          _buildRow(AppLocalizations.of(context)!.fieldDescription, item.description),
-          _buildDivider(),
-          _buildRow(AppLocalizations.of(context)!.fieldCategory, item.category),
-          _buildDivider(),
+          if (item.description != null && item.description!.isNotEmpty) ...[
+            _buildRow(l.fieldDescription, item.description!),
+            _buildDivider(),
+          ],
+          if (item.category != null && item.category!.isNotEmpty) ...[
+            _buildRow(l.fieldCategory, item.category!),
+            _buildDivider(),
+          ],
           _buildRow(
-            AppLocalizations.of(context)!.fieldLocation,
+            l.fieldLocation,
             item.locationName ?? 'ID ${item.locationId}',
           ),
           if (item.barcode != null && item.barcode!.isNotEmpty) ...[
             _buildDivider(),
-            _buildRow(AppLocalizations.of(context)!.fieldBarcode, item.barcode!),
+            _buildRow(l.fieldBarcode, item.barcode!),
           ],
           if (item.expiryDate != null) ...[
             _buildDivider(),
             _buildExpiryRow(item),
           ],
+          if (item.unit != null) ...[
+            _buildDivider(),
+            _buildRow(l.fieldUnit, _formatUnitDisplay(item)),
+          ],
+          if (item.criticalThreshold != null) ...[
+            _buildDivider(),
+            _buildRow(l.fieldCriticalThreshold, '${item.criticalThreshold}'),
+          ],
+          if (item.warningDays != null) ...[
+            _buildDivider(),
+            _buildRow(l.fieldWarningDays, '${item.warningDays} ${l.days}'),
+          ],
         ],
       ),
     );
+  }
+
+  String _formatUnitDisplay(Item item) {
+    if (item.packSize != null && item.packSize! > 1) {
+      return '${item.unit} (${item.packSize} Stk. pro ${item.unit})';
+    }
+    return item.unit!;
   }
 
   Widget _buildRow(String label, String value, {Color? valueColor}) {
@@ -390,6 +514,75 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   Widget _buildDivider() =>
       Divider(height: 1, color: context.colorBorder, indent: 16);
 
+  Widget _buildTransferButton(Item item) {
+    final l = AppLocalizations.of(context)!;
+    return OutlinedButton.icon(
+      style: OutlinedButton.styleFrom(
+        side: BorderSide(color: context.colorBorder),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        padding: const EdgeInsets.symmetric(vertical: 14),
+      ),
+      icon: Icon(Icons.swap_horiz, color: context.colorTextPrimary),
+      label: Text(
+        l.transferItemBtn,
+        style: GoogleFonts.inter(
+          color: context.colorTextPrimary,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      onPressed: () => _showTransferSheet(item),
+    );
+  }
+
+  Future<void> _showTransferSheet(Item source) async {
+    final locProv = context.read<LocationProvider>();
+    final otherLocations =
+        locProv.locations.where((l) => l.id != source.locationId).toList();
+
+    if (otherLocations.isEmpty) {
+      showAppSnackBar(context, AppLocalizations.of(context)!.noOtherLocations,
+          isError: true);
+      return;
+    }
+
+    await showModalBottomSheet(
+      context: context,
+      backgroundColor: context.colorCard,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) => _TransferSheet(
+        source: source,
+        locations: otherLocations,
+        onTransfer: (targetLocationId, qty) async {
+          Navigator.pop(ctx);
+          try {
+            final targetLocation =
+                locProv.locations.firstWhere((l) => l.id == targetLocationId);
+            await context.read<ItemProvider>().transferItem(
+                  source,
+                  targetLocationId,
+                  targetLocation.name,
+                  qty,
+                );
+            if (mounted) {
+              showAppSnackBar(
+                  context, AppLocalizations.of(context)!.toastTransferred,
+                  isSuccess: true);
+            }
+          } catch (e) {
+            if (mounted) {
+              showAppSnackBar(
+                  context, AppLocalizations.of(context)!.toastError,
+                  isError: true);
+            }
+          }
+        },
+      ),
+    );
+  }
+
   void _confirmDelete(BuildContext context, Item item) {
     showDialog(
       context: context,
@@ -421,7 +614,9 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 if (context.mounted) Navigator.pop(context);
               } catch (e) {
                 if (context.mounted) {
-                  showAppSnackBar(context, AppLocalizations.of(context)!.toastError, isError: true);
+                  showAppSnackBar(context,
+                      AppLocalizations.of(context)!.toastError,
+                      isError: true);
                 }
               }
             },
@@ -432,6 +627,187 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     );
   }
 }
+
+// ── Transfer bottom sheet ──────────────────────────────────────────────────
+
+class _TransferSheet extends StatefulWidget {
+  final Item source;
+  final List<Location> locations;
+  final Future<void> Function(int targetLocationId, int quantity) onTransfer;
+
+  const _TransferSheet({
+    required this.source,
+    required this.locations,
+    required this.onTransfer,
+  });
+
+  @override
+  State<_TransferSheet> createState() => _TransferSheetState();
+}
+
+class _TransferSheetState extends State<_TransferSheet> {
+  int? _selectedLocationId;
+  late int _quantity;
+  bool _transferring = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _quantity = widget.source.quantity;
+    if (widget.locations.isNotEmpty) {
+      _selectedLocationId = widget.locations.first.id;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+          20, 16, 20, 24 + MediaQuery.of(context).viewInsets.bottom),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: context.colorBorder,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            l.transferSelectLocation,
+            style: GoogleFonts.inter(
+              color: context.colorTextPrimary,
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(height: 14),
+          DropdownButtonFormField<int>(
+            value: _selectedLocationId,
+            dropdownColor: context.colorCard,
+            style: GoogleFonts.inter(color: context.colorTextPrimary),
+            decoration: InputDecoration(labelText: l.fieldLocation),
+            items: widget.locations
+                .map((loc) => DropdownMenuItem(
+                      value: loc.id,
+                      child: Text(loc.name),
+                    ))
+                .toList(),
+            onChanged: (v) => setState(() => _selectedLocationId = v),
+          ),
+          const SizedBox(height: 14),
+          Text(
+            l.transferSelectQuantity,
+            style: GoogleFonts.inter(
+              color: context.colorTextSecondary,
+              fontSize: 13,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              _StepBtn(
+                icon: Icons.remove,
+                enabled: _quantity > 1,
+                onTap: () => setState(() => _quantity--),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Center(
+                  child: Text(
+                    '$_quantity / ${widget.source.quantity}',
+                    style: GoogleFonts.inter(
+                      color: context.colorTextPrimary,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              _StepBtn(
+                icon: Icons.add,
+                enabled: _quantity < widget.source.quantity,
+                onTap: () => setState(() => _quantity++),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: _transferring || _selectedLocationId == null
+                  ? null
+                  : _doTransfer,
+              child: _transferring
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: Colors.black),
+                    )
+                  : Text(l.transferConfirmBtn),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _doTransfer() async {
+    if (_selectedLocationId == null) return;
+    setState(() => _transferring = true);
+    try {
+      await widget.onTransfer(_selectedLocationId!, _quantity);
+    } finally {
+      if (mounted) setState(() => _transferring = false);
+    }
+  }
+}
+
+class _StepBtn extends StatelessWidget {
+  final IconData icon;
+  final bool enabled;
+  final VoidCallback onTap;
+
+  const _StepBtn({
+    required this.icon,
+    required this.enabled,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: enabled ? onTap : null,
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: enabled
+              ? AppColors.primary.withAlpha(20)
+              : context.colorBorder.withAlpha(40),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: enabled ? AppColors.primary.withAlpha(60) : context.colorBorder,
+          ),
+        ),
+        child: Icon(icon,
+            size: 20,
+            color: enabled ? AppColors.primary : context.colorTextMuted),
+      ),
+    );
+  }
+}
+
+// ── Helpers (category color/icon) ─────────────────────────────────────────
 
 class _LargeStepButton extends StatelessWidget {
   final IconData icon;
@@ -461,8 +837,8 @@ class _LargeStepButton extends StatelessWidget {
             color: enabled ? color.withAlpha(60) : context.colorBorder,
           ),
         ),
-        child: Icon(icon, size: 24,
-            color: enabled ? color : context.colorTextMuted),
+        child: Icon(icon,
+            size: 24, color: enabled ? color : context.colorTextMuted),
       ),
     );
   }
@@ -509,7 +885,7 @@ IconData _categoryIcon(String category) {
   final k = category.toLowerCase();
   if (k.contains('elektro')) return Icons.electrical_services_outlined;
   if (k.contains('werkzeug') || k.contains('tool')) return Icons.build_outlined;
-  if (k.contains('büro') || k.contains('office')) return Icons.work_outline; // matches both German and English category names
+  if (k.contains('büro') || k.contains('office')) return Icons.work_outline;
   if (k.contains('lebens') || k.contains('food')) return Icons.fastfood_outlined;
   if (k.contains('medizin') || k.contains('health')) {
     return Icons.medical_services_outlined;

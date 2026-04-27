@@ -5,7 +5,7 @@ require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../helpers/response.php';
 
 setCorsHeaders();
-validateApiKey(); // Validate API key
+validateApiKey();
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -14,7 +14,6 @@ try {
 
     if ($method === 'GET') {
         // ── GET /items ──────────────────────────────────────────────────
-        // JOIN with locations to include location name in response
         $stmt = $pdo->prepare(
             'SELECT i.*, s.name AS location_name
                FROM items i
@@ -29,8 +28,8 @@ try {
         // ── POST /items ─────────────────────────────────────────────────
         $body = getRequestBody();
 
-        // Validate required fields
-        $required = ['name', 'description', 'category', 'quantity', 'location_id'];
+        // Only name, quantity, location_id are required; description and category are optional
+        $required = ['name', 'quantity', 'location_id'];
         foreach ($required as $field) {
             if (empty($body[$field]) && $body[$field] !== 0) {
                 sendError("Required field missing: $field", 400);
@@ -38,17 +37,25 @@ try {
         }
 
         $stmt = $pdo->prepare(
-            'INSERT INTO items (name, description, category, barcode, quantity, location_id, expiry_date)
-             VALUES (:name, :description, :category, :barcode, :quantity, :location_id, :expiry_date)'
+            'INSERT INTO items
+               (name, description, category, barcode, quantity, location_id,
+                expiry_date, unit, critical_threshold, warning_days, pack_size)
+             VALUES
+               (:name, :description, :category, :barcode, :quantity, :location_id,
+                :expiry_date, :unit, :critical_threshold, :warning_days, :pack_size)'
         );
         $stmt->execute([
-            ':name'        => trim($body['name']),
-            ':description' => trim($body['description']),
-            ':category'    => trim($body['category']),
-            ':barcode'     => isset($body['barcode']) ? trim($body['barcode']) : null,
-            ':quantity'    => (int) $body['quantity'],
-            ':location_id' => (int) $body['location_id'],
-            ':expiry_date' => isset($body['expiry_date']) && $body['expiry_date'] !== '' ? $body['expiry_date'] : null,
+            ':name'               => trim($body['name']),
+            ':description'        => isset($body['description']) && $body['description'] !== '' ? trim($body['description']) : null,
+            ':category'           => isset($body['category'])    && $body['category']    !== '' ? trim($body['category'])    : null,
+            ':barcode'            => isset($body['barcode'])     && $body['barcode']     !== '' ? trim($body['barcode'])     : null,
+            ':quantity'           => (int) $body['quantity'],
+            ':location_id'        => (int) $body['location_id'],
+            ':expiry_date'        => isset($body['expiry_date']) && $body['expiry_date'] !== '' ? $body['expiry_date']       : null,
+            ':unit'               => isset($body['unit'])               && $body['unit']               !== '' ? trim($body['unit'])               : null,
+            ':critical_threshold' => isset($body['critical_threshold']) && $body['critical_threshold'] !== '' ? (int) $body['critical_threshold'] : null,
+            ':warning_days'       => isset($body['warning_days'])       && $body['warning_days']       !== '' ? (int) $body['warning_days']       : null,
+            ':pack_size'          => isset($body['pack_size'])          && $body['pack_size']          !== '' ? (int) $body['pack_size']          : null,
         ]);
 
         $newId = (int) $pdo->lastInsertId();
@@ -71,6 +78,5 @@ try {
 } catch (RuntimeException $e) {
     sendError($e->getMessage(), $e->getCode() ?: 500);
 } catch (PDOException $e) {
-    // Do not expose internal PDO errors (NFA-08)
     sendError('A database error occurred.', 500);
 }

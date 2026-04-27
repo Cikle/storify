@@ -174,9 +174,10 @@ class _MatchCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 2),
-                    Text(item.category,
-                        style: GoogleFonts.inter(
-                            color: context.colorTextSecondary, fontSize: 12)),
+                    if (item.category != null && item.category!.isNotEmpty)
+                      Text(item.category!,
+                          style: GoogleFonts.inter(
+                              color: context.colorTextSecondary, fontSize: 12)),
                     if (item.locationName != null)
                       Text(item.locationName!,
                           style: GoogleFonts.inter(

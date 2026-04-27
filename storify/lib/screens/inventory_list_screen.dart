@@ -38,6 +38,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.inventoryTitle)),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'inventory_fab',
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const ItemFormScreen()),
@@ -313,16 +314,36 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               alignment: Alignment.center,
-              child: Text(
-                '${item.quantity}',
-                style: GoogleFonts.inter(
-                  color: item.isLowStock
-                      ? AppColors.warning
-                      : AppColors.primary,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                ),
-              ),
+              child: item.unit != null
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${item.quantity}',
+                          style: GoogleFonts.inter(
+                            color: item.isLowStock ? AppColors.warning : AppColors.primary,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13,
+                          ),
+                        ),
+                        Text(
+                          item.unit!,
+                          style: GoogleFonts.inter(
+                            color: item.isLowStock ? AppColors.warning : AppColors.primary,
+                            fontSize: 9,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    )
+                  : Text(
+                      '${item.quantity}',
+                      style: GoogleFonts.inter(
+                        color: item.isLowStock ? AppColors.warning : AppColors.primary,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                      ),
+                    ),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -338,13 +359,14 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
                     ),
                   ),
                   const SizedBox(height: 2),
-                  Text(
-                    item.category,
-                    style: GoogleFonts.inter(
-                      color: context.colorTextSecondary,
-                      fontSize: 12,
+                  if (item.category != null && item.category!.isNotEmpty)
+                    Text(
+                      item.category!,
+                      style: GoogleFonts.inter(
+                        color: context.colorTextSecondary,
+                        fontSize: 12,
+                      ),
                     ),
-                  ),
                   if (item.locationName != null)
                     Text(
                       item.locationName!,

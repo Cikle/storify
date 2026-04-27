@@ -31,6 +31,7 @@ class _LocationListScreenState extends State<LocationListScreen> {
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.locationsTitle)),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'locations_fab',
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const LocationFormScreen()),

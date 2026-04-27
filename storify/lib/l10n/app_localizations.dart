@@ -1105,6 +1105,108 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'URL und API-Key können jederzeit unter Einstellungen geändert werden.'**
   String get setupInfoText;
+
+  /// Feldbezeichnung: Einheit
+  ///
+  /// In de, this message translates to:
+  /// **'Einheit (optional)'**
+  String get fieldUnit;
+
+  /// Feldbezeichnung: Kritische Menge
+  ///
+  /// In de, this message translates to:
+  /// **'Kritische Menge (optional)'**
+  String get fieldCriticalThreshold;
+
+  /// Feldbezeichnung: Warntage vor Ablauf
+  ///
+  /// In de, this message translates to:
+  /// **'Warnung vor Ablauf (Tage)'**
+  String get fieldWarningDays;
+
+  /// Feldbezeichnung: Stück pro Einheit
+  ///
+  /// In de, this message translates to:
+  /// **'Stück pro Einheit'**
+  String get fieldPackSize;
+
+  /// Feldbezeichnung: Foto
+  ///
+  /// In de, this message translates to:
+  /// **'Foto'**
+  String get fieldPhoto;
+
+  /// Button: Foto hinzufügen
+  ///
+  /// In de, this message translates to:
+  /// **'Foto hinzufügen'**
+  String get btnAddPhoto;
+
+  /// Button: Foto entfernen
+  ///
+  /// In de, this message translates to:
+  /// **'Foto entfernen'**
+  String get btnRemovePhoto;
+
+  /// Dropdown-Option: Keine Einheit
+  ///
+  /// In de, this message translates to:
+  /// **'Keine Einheit'**
+  String get labelNoUnit;
+
+  /// Einheit: Tage
+  ///
+  /// In de, this message translates to:
+  /// **'Tage'**
+  String get days;
+
+  /// Button: Artikel transferieren
+  ///
+  /// In de, this message translates to:
+  /// **'Transferieren'**
+  String get transferItemBtn;
+
+  /// Transfer-Sheet: Standort wählen
+  ///
+  /// In de, this message translates to:
+  /// **'Zielstandort wählen'**
+  String get transferSelectLocation;
+
+  /// Transfer-Sheet: Menge wählen
+  ///
+  /// In de, this message translates to:
+  /// **'Menge wählen'**
+  String get transferSelectQuantity;
+
+  /// Transfer-Sheet: Alle transferieren
+  ///
+  /// In de, this message translates to:
+  /// **'Alle'**
+  String get transferAll;
+
+  /// Toast: Foto-Upload nach Speichern fehlgeschlagen
+  ///
+  /// In de, this message translates to:
+  /// **'Artikel gespeichert, Foto-Upload fehlgeschlagen.'**
+  String get toastPhotoUploadFailed;
+
+  /// Dialog: Titel ungespeicherte Änderungen
+  ///
+  /// In de, this message translates to:
+  /// **'Ungespeicherte Änderungen'**
+  String get unsavedChangesTitle;
+
+  /// Dialog: Text ungespeicherte Änderungen
+  ///
+  /// In de, this message translates to:
+  /// **'Du hast ungespeicherte Änderungen. Verwerfen?'**
+  String get unsavedChangesBody;
+
+  /// Button: Änderungen verwerfen
+  ///
+  /// In de, this message translates to:
+  /// **'Verwerfen'**
+  String get btnDiscard;
 }
 
 class _AppLocalizationsDelegate

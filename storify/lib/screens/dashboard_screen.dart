@@ -414,12 +414,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: _categoryColor(item.category).withAlpha(30),
+                    color: _categoryColor(item.category ?? '').withAlpha(30),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    _categoryIcon(item.category),
-                    color: _categoryColor(item.category),
+                    _categoryIcon(item.category ?? ''),
+                    color: _categoryColor(item.category ?? ''),
                     size: 18,
                   ),
                 ),
@@ -436,13 +436,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           fontSize: 14,
                         ),
                       ),
-                      Text(
-                        '${item.category}${item.locationName != null ? ' · ${item.locationName}' : ''}',
-                        style: GoogleFonts.inter(
-                          color: context.colorTextSecondary,
-                          fontSize: 12,
+                      if (item.category != null || item.locationName != null)
+                        Text(
+                          [
+                            if (item.category != null && item.category!.isNotEmpty) item.category!,
+                            if (item.locationName != null) item.locationName!,
+                          ].join(' · '),
+                          style: GoogleFonts.inter(
+                            color: context.colorTextSecondary,
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -543,13 +547,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  Text(
-                    item.category,
-                    style: GoogleFonts.inter(
-                      color: context.colorTextSecondary,
-                      fontSize: 12,
+                  if (item.category != null && item.category!.isNotEmpty)
+                    Text(
+                      item.category!,
+                      style: GoogleFonts.inter(
+                        color: context.colorTextSecondary,
+                        fontSize: 12,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),

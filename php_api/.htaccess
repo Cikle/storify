@@ -37,7 +37,7 @@ Header always set Referrer-Policy "no-referrer"
 
 Header always set Access-Control-Allow-Origin "*"
 Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
-Header always set Access-Control-Allow-Headers "Content-Type, Accept"
+Header always set Access-Control-Allow-Headers "Content-Type, Accept, X-Api-Key"
 
 # OPTIONS-Preflight sofort beantworten
 RewriteCond %{REQUEST_METHOD} OPTIONS
@@ -46,10 +46,13 @@ RewriteRule ^ - [R=204,L]
 # ── URL-Rewriting: saubere REST-URLs ──────────────────────────────────────
 
 # /items → items/index.php
-RewriteRule ^items/?$                  items/index.php        [L,QSA]
+RewriteRule ^items/?$                          items/index.php        [L,QSA]
+
+# /items/{id}/photo → items/photo.php?id={id}  (must be before the {id} rule)
+RewriteRule ^items/([0-9]+)/photo/?$           items/photo.php?id=$1  [L,QSA]
 
 # /items/{id} → items/single.php?id={id}
-RewriteRule ^items/([0-9]+)/?$         items/single.php?id=$1 [L,QSA]
+RewriteRule ^items/([0-9]+)/?$                 items/single.php?id=$1 [L,QSA]
 
 # /locations → locations/index.php
 RewriteRule ^locations/?$              locations/index.php        [L,QSA]
