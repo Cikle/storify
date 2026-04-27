@@ -7,6 +7,7 @@ import 'package:storify/services/api_service.dart';
 import 'package:storify/services/storage_service.dart';
 import 'package:storify/services/sync_service.dart';
 import 'package:storify/l10n/app_localizations.dart';
+import 'package:storify/screens/setup_screen.dart';
 import 'package:storify/utils/constants.dart';
 
 class AccountsScreen extends StatefulWidget {
@@ -73,13 +74,19 @@ class _AccountsScreenState extends State<AccountsScreen> {
 
   Future<void> _deleteAccount(String name) async {
     final storage = context.read<StorageService>();
+    final isActive = storage.getActiveAccount()?['name'] == name;
+
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
         title: Text('Delete account?',
             style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
-        content: Text('Really delete account "$name"?',
-            style: GoogleFonts.inter()),
+        content: Text(
+          isActive
+              ? 'This is your active account. Deleting it will log you out and clear all cached data.'
+              : 'Really delete account "$name"?',
+          style: GoogleFonts.inter(),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -96,7 +103,21 @@ class _AccountsScreenState extends State<AccountsScreen> {
     if (confirmed != true) return;
 
     await storage.deleteAccount(name);
-    if (mounted) _loadAccounts();
+
+    if (!mounted) return;
+
+    final hasAccounts = storage.loadAccounts().isNotEmpty;
+    if (isActive || !hasAccounts) {
+      await storage.clearDataCaches();
+      if (mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const SetupScreen()),
+          (_) => false,
+        );
+      }
+    } else {
+      _loadAccounts();
+    }
   }
 
   void _showAddAccountSheet() {
@@ -172,7 +193,7 @@ class _AccountsScreenState extends State<AccountsScreen> {
                   isActive: isActive,
                   onSwitch: isActive ? null : () => _switchAccount(name),
                   onEdit: () => _showEditAccountSheet(account),
-                  onDelete: isActive ? null : () => _deleteAccount(name),
+                  onDelete: () => _deleteAccount(name),
                 );
               },
             ),
@@ -191,7 +212,7 @@ class _AccountTile extends StatelessWidget {
   final bool isActive;
   final VoidCallback? onSwitch;
   final VoidCallback onEdit;
-  final VoidCallback? onDelete;
+  final VoidCallback onDelete;
 
   const _AccountTile({
     required this.name,
@@ -199,7 +220,7 @@ class _AccountTile extends StatelessWidget {
     required this.isActive,
     this.onSwitch,
     required this.onEdit,
-    this.onDelete,
+    required this.onDelete,
   });
 
   @override
@@ -283,18 +304,17 @@ class _AccountTile extends StatelessWidget {
             tooltip: 'Edit',
             onPressed: onEdit,
           ),
-          if (!isActive) ...[
+          if (!isActive)
             IconButton(
               icon: const Icon(Icons.swap_horiz, color: AppColors.primary),
               tooltip: 'Switch',
               onPressed: onSwitch,
             ),
-            IconButton(
-              icon: const Icon(Icons.delete_outline, color: AppColors.error),
-              tooltip: 'Delete',
-              onPressed: onDelete,
-            ),
-          ],
+          IconButton(
+            icon: const Icon(Icons.delete_outline, color: AppColors.error),
+            tooltip: 'Delete',
+            onPressed: onDelete,
+          ),
         ],
       ),
     );

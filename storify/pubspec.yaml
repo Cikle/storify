@@ -1,7 +1,7 @@
 name: storify
 description: "Inventarverwaltungs-App mit Strichcode-Erfassung – cikle"
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.4+4
 
 environment:
   sdk: ^3.6.0
@@ -49,6 +49,9 @@ dependencies:
 
   # Localization
   intl: ^0.20.2
+
+  # Read app version from pubspec.yaml at runtime
+  package_info_plus: ^8.0.0
 
 dev_dependencies:
   flutter_test:

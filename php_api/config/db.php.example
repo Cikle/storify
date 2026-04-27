@@ -7,6 +7,7 @@ define('DB_NAME',   'your_database'); // Database name in Plesk
 define('DB_USER',   'db_user');       // Database username in Plesk
 define('DB_PASS',   'db_password');   // Database password
 define('DB_CHARSET','utf8mb4');
+define('API_KEY',   'your_api_key'); // Must match the key configured in the Flutter app
 
 // Build PDO connection with prepared statements enabled (NFA-07)
 function getDbConnection(): PDO

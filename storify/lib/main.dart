@@ -22,7 +22,18 @@ void main() async {
   final api = ApiService(storage);
   final sync = SyncService(storage, api);
 
-  final isConfigured = storage.isConfigured;
+  bool showSetup = !storage.isConfigured;
+
+  if (!showSetup) {
+    try {
+      await ApiService.checkConnectionWith(
+        storage.getApiBaseUrl(),
+        storage.getApiKey(),
+      );
+    } catch (_) {
+      showSetup = true;
+    }
+  }
 
   runApp(
     MultiProvider(
@@ -43,7 +54,7 @@ void main() async {
           create: (_) => LocationProvider(api, storage, sync),
         ),
       ],
-      child: StorifyApp(showSetup: !isConfigured),
+      child: StorifyApp(showSetup: showSetup),
     ),
   );
 }
