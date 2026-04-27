@@ -8,3 +8,4 @@ storify/.flutter-plugins
 storify/.flutter-plugins-dependencies
 *claude 
 CLAUDE.md
+**/*.jks
