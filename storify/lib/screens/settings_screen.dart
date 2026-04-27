@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:storify/providers/item_provider.dart';
 import 'package:storify/providers/locale_provider.dart';
@@ -28,6 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _connectionOk = false;
   String? _statusMessage;
   bool _statusIsError = false;
+  String _appVersion = '';
 
   @override
   void initState() {
@@ -35,6 +37,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final storage = context.read<StorageService>();
     _urlCtrl = TextEditingController(text: storage.getApiBaseUrl());
     _keyCtrl = TextEditingController(text: storage.getApiKey());
+    PackageInfo.fromPlatform().then((info) {
+      if (mounted) setState(() => _appVersion = info.version);
+    });
   }
 
   @override
@@ -379,7 +384,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildInfoRow('App', 'Storify'),
-          _buildInfoRow('Version', '1.0.0'),
+          _buildInfoRow('Version', _appVersion),
           _buildInfoRow('Autor', 'cikle'),
           _buildInfoRow('Backend', 'PHP REST-API + MySQL'),
         ],
