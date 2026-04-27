@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.storify"
+    namespace = "com.cikle.storify"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -21,7 +21,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.storify"
+        applicationId = "com.cikle.storify"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
