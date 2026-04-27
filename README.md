@@ -1,20 +1,21 @@
 # Storify
 
-A Flutter inventory app with barcode scanning, backed by a self-hosted PHP REST API on a MySQL database.
+A self-hosted inventory management app built with Flutter, backed by a PHP REST API on MySQL. Scan barcodes, track stock across locations, and stay in sync — even offline.
 
 ## Features
 
-- Inventory management — add, edit, delete items with category, location, barcode, and expiry date
-- Barcode scanner — scan to look up or create items instantly
-- Stock control — +/− buttons inline and on the detail screen
-- Item transfer — move stock between locations (full or partial)
-- Low-stock alerts — local push notifications when stock drops below threshold
-- Expiry tracking — banners and dashboard cards for expiring/expired items
-- Offline-first — cached data shown immediately, writes queued and synced on reconnect
-- Multi-account — switch between multiple API backends
-- Export — CSV and PDF inventory reports
-- Import — restock via CSV upload
-- Dark theme, English/German localization
+- **Inventory management** — add, edit, delete items with name, category, barcode, location, expiry date, unit, pack size, and photo
+- **Barcode scanner** — scan to look up or create items instantly via camera
+- **Stock control** — inline +/− controls and per-item quantity adjustments
+- **Item transfer** — move stock between locations (full or partial)
+- **Item photos** — attach camera or gallery photos to items
+- **Low-stock alerts** — local push notifications when stock drops below a configurable threshold
+- **Expiry tracking** — dashboard cards and banners for expiring and expired items
+- **Offline-first** — cached data shown immediately, writes queued locally and synced on reconnect
+- **Multi-account** — switch between multiple self-hosted API backends
+- **Export** — CSV and PDF inventory reports
+- **Import** — bulk restock via CSV upload
+- **Dark theme, English/German localization**
 
 ## Stack
 
@@ -23,15 +24,24 @@ A Flutter inventory app with barcode scanning, backed by a self-hosted PHP REST 
 | App | Flutter (Dart) |
 | State | Provider |
 | Backend | PHP 8.x REST API |
-| Database | MySQL (InnoDB), hosted on Plesk |
+| Database | MySQL (InnoDB) |
 | Auth | Static API key (`X-Api-Key` header) |
+| Barcode | mobile_scanner |
+| Export | csv, pdf, printing |
+
+## Requirements
+
+- Flutter SDK 3.6+
+- PHP 8.0+
+- MySQL 5.7+ / MariaDB 10.3+
+- A web server with `.htaccess` support (Apache / Plesk)
 
 ## Setup
 
 ### Backend
 
 1. Upload `php_api/` to your web server
-2. Copy `php_api/config/db.php.example` → `php_api/config/db.php` and fill in credentials
+2. Copy `php_api/config/db.php.example` → `php_api/config/db.php` and fill in your credentials
 3. Run `php_api/database/schema.sql` on your MySQL database
 4. Set a strong random `API_KEY` in `db.php`
 
@@ -57,8 +67,8 @@ flutter build ipa              # iOS (requires Mac + Xcode)
 ```
 php_api/          PHP REST API
   config/         DB connection + API key
-  helpers/        Response helpers
-  items/          /items endpoints
+  helpers/        Response + request helpers
+  items/          /items endpoints (list, detail, photo)
   locations/      /locations endpoints
   database/       schema.sql
 
