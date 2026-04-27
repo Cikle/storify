@@ -20,7 +20,11 @@ class StorageService {
   // ── Migration: Legacy-URL/Key → erster Account ──────────────────────────
   Future<void> _migrateIfNeeded() async {
     final accountsRaw = _prefs?.getString(kAccountsKey);
-    if (accountsRaw != null) return; // bereits migriert
+    // Only skip if accounts key exists AND has at least one account
+    if (accountsRaw != null) {
+      final existing = jsonDecode(accountsRaw) as List? ?? [];
+      if (existing.isNotEmpty) return;
+    }
 
     final legacyUrl = _prefs?.getString(kApiBaseUrlKey);
     final legacyKey = _prefs?.getString(kApiKeyKey);

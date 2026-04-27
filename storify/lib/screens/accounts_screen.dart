@@ -26,12 +26,21 @@ class _AccountsScreenState extends State<AccountsScreen> {
     _loadAccounts();
   }
 
+  // Refresh when navigating back to this screen
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadAccounts();
+  }
+
   void _loadAccounts() {
     final storage = context.read<StorageService>();
-    setState(() => _accounts = storage.loadAccounts());
+    final accounts = storage.loadAccounts();
+    if (mounted) setState(() => _accounts = accounts);
   }
 
   Future<void> _switchAccount(String name) async {
+    final l = AppLocalizations.of(context)!;
     final sync = context.read<SyncService>();
     final storage = context.read<StorageService>();
     final items = context.read<ItemProvider>();
@@ -40,21 +49,21 @@ class _AccountsScreenState extends State<AccountsScreen> {
       final confirmed = await showDialog<bool>(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Pending changes',
+          title: Text(l.accountsPendingTitle,
               style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
           content: Text(
-            '${sync.pendingCount} changes have not been synced yet. Switch anyway?',
+            l.accountsPendingBody(sync.pendingCount),
             style: GoogleFonts.inter(),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel'),
+              child: Text(l.btnCancel),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: const Text('Switch anyway',
-                  style: TextStyle(color: AppColors.error)),
+              child: Text(l.accountsSwitchAnyway,
+                  style: const TextStyle(color: AppColors.error)),
             ),
           ],
         ),
@@ -68,34 +77,33 @@ class _AccountsScreenState extends State<AccountsScreen> {
       items.loadItems();
       locations.loadLocations();
       _loadAccounts();
-      showAppSnackBar(context, AppLocalizations.of(context)!.toastAccountSwitched, isSuccess: true);
+      showAppSnackBar(context, l.toastAccountSwitched, isSuccess: true);
     }
   }
 
   Future<void> _deleteAccount(String name) async {
+    final l = AppLocalizations.of(context)!;
     final storage = context.read<StorageService>();
     final isActive = storage.getActiveAccount()?['name'] == name;
 
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text('Delete account?',
+        title: Text(l.accountsDelete,
             style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
         content: Text(
-          isActive
-              ? 'This is your active account. Deleting it will log you out and clear all cached data.'
-              : 'Really delete account "$name"?',
+          isActive ? l.accountsDeleteActive : l.accountsDeleteConfirm(name),
           style: GoogleFonts.inter(),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(l.btnCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete',
-                style: TextStyle(color: AppColors.error)),
+            child: Text(l.btnDelete,
+                style: const TextStyle(color: AppColors.error)),
           ),
         ],
       ),
@@ -151,7 +159,6 @@ class _AccountsScreenState extends State<AccountsScreen> {
         onSaved: () {
           if (mounted) {
             _loadAccounts();
-            // If this was the active account, reload data with new credentials
             final storage = context.read<StorageService>();
             final active = storage.getActiveAccount();
             if (active != null) {
@@ -166,17 +173,19 @@ class _AccountsScreenState extends State<AccountsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final activeAccount = context.read<StorageService>().getActiveAccount();
     final activeName = activeAccount?['name'] as String? ?? '';
 
     return Scaffold(
       backgroundColor: context.colorBackground,
       appBar: AppBar(
-        title: Text('Accounts', style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
+        title: Text(l.accountsTitle,
+            style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
       ),
       body: _accounts.isEmpty
           ? Center(
-              child: Text('No accounts configured yet.',
+              child: Text(l.accountsNoAccounts,
                   style: GoogleFonts.inter(color: context.colorTextMuted)),
             )
           : ListView.separated(
@@ -198,9 +207,11 @@ class _AccountsScreenState extends State<AccountsScreen> {
               },
             ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'accounts_fab', // unique tag prevents hero animation conflicts
         onPressed: _showAddAccountSheet,
         icon: const Icon(Icons.add),
-        label: Text('Add account', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+        label: Text(l.accountsAdd,
+            style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
       ),
     );
   }
@@ -225,6 +236,7 @@ class _AccountTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -277,7 +289,7 @@ class _AccountTile extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          'Active',
+                          l.accountsActive,
                           style: GoogleFonts.inter(
                             color: AppColors.primary,
                             fontSize: 11,
@@ -298,21 +310,21 @@ class _AccountTile extends StatelessWidget {
               ],
             ),
           ),
-          // Edit button — always visible
           IconButton(
-            icon: Icon(Icons.edit_outlined, color: context.colorTextSecondary, size: 20),
-            tooltip: 'Edit',
+            icon: Icon(Icons.edit_outlined,
+                color: context.colorTextSecondary, size: 20),
+            tooltip: l.btnEdit,
             onPressed: onEdit,
           ),
           if (!isActive)
             IconButton(
               icon: const Icon(Icons.swap_horiz, color: AppColors.primary),
-              tooltip: 'Switch',
+              tooltip: l.accountsSwitch,
               onPressed: onSwitch,
             ),
           IconButton(
             icon: const Icon(Icons.delete_outline, color: AppColors.error),
-            tooltip: 'Delete',
+            tooltip: l.btnDelete,
             onPressed: onDelete,
           ),
         ],
@@ -324,7 +336,6 @@ class _AccountTile extends StatelessWidget {
 // ── Unified add/edit sheet ────────────────────────────────────────────────────
 
 class _AccountSheet extends StatefulWidget {
-  /// When non-null, we're in edit mode for the given account name.
   final String? editName;
   final String initialUrl;
   final String initialKey;
@@ -359,8 +370,9 @@ class _AccountSheetState extends State<_AccountSheet> {
     _nameCtrl = TextEditingController(text: widget.editName ?? '');
     _urlCtrl = TextEditingController(text: widget.initialUrl);
     _keyCtrl = TextEditingController(text: widget.initialKey);
-    // In edit mode with existing credentials, pre-mark as tested so Save is enabled
-    if (widget.isEditMode && widget.initialUrl.isNotEmpty && widget.initialKey.isNotEmpty) {
+    if (widget.isEditMode &&
+        widget.initialUrl.isNotEmpty &&
+        widget.initialKey.isNotEmpty) {
       _tested = true;
       _testSuccess = true;
     }
@@ -375,7 +387,6 @@ class _AccountSheetState extends State<_AccountSheet> {
   }
 
   void _onCredentialsChanged() {
-    // Reset test result when user changes URL or key
     if (_tested) {
       setState(() {
         _tested = false;
@@ -386,13 +397,14 @@ class _AccountSheetState extends State<_AccountSheet> {
   }
 
   Future<void> _testConnection() async {
+    final l = AppLocalizations.of(context)!;
     final url = _urlCtrl.text.trim();
     final key = _keyCtrl.text.trim();
     if (url.isEmpty || key.isEmpty) {
       setState(() {
         _tested = true;
         _testSuccess = false;
-        _testMessage = 'URL and key are required.';
+        _testMessage = l.accountsUrlKeyRequired;
       });
       return;
     }
@@ -402,7 +414,7 @@ class _AccountSheetState extends State<_AccountSheet> {
       await ApiService.checkConnectionWith(url, key);
       setState(() {
         _testSuccess = true;
-        _testMessage = 'Connection successful.';
+        _testMessage = l.successConnection;
       });
     } on ApiException catch (e) {
       setState(() {
@@ -412,7 +424,7 @@ class _AccountSheetState extends State<_AccountSheet> {
     } catch (_) {
       setState(() {
         _testSuccess = false;
-        _testMessage = 'Connection failed.';
+        _testMessage = l.errorConnection;
       });
     } finally {
       setState(() {
@@ -423,6 +435,7 @@ class _AccountSheetState extends State<_AccountSheet> {
   }
 
   Future<void> _save() async {
+    final l = AppLocalizations.of(context)!;
     final name = _nameCtrl.text.trim();
     final url = _urlCtrl.text.trim();
     final key = _keyCtrl.text.trim();
@@ -431,23 +444,19 @@ class _AccountSheetState extends State<_AccountSheet> {
     final storage = context.read<StorageService>();
     if (widget.isEditMode) {
       await storage.updateAccountFull(widget.editName!, name, url, key);
-      if (mounted) {
-        Navigator.pop(context);
-        widget.onSaved();
-        showAppSnackBar(context, AppLocalizations.of(context)!.toastAccountSaved, isSuccess: true);
-      }
     } else {
       await storage.addAccount(name, url, key);
-      if (mounted) {
-        Navigator.pop(context);
-        widget.onSaved();
-        showAppSnackBar(context, AppLocalizations.of(context)!.toastAccountSaved, isSuccess: true);
-      }
+    }
+    if (mounted) {
+      Navigator.pop(context);
+      widget.onSaved();
+      showAppSnackBar(context, l.toastAccountSaved, isSuccess: true);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
     final isEdit = widget.isEditMode;
     return Padding(
@@ -467,18 +476,19 @@ class _AccountSheetState extends State<_AccountSheet> {
           ),
           const SizedBox(height: 20),
           Text(
-            isEdit ? 'Edit account' : 'Add account',
+            isEdit ? l.accountsEditTitle : l.accountsAddTitle,
             style: GoogleFonts.inter(
                 color: context.colorTextPrimary,
                 fontWeight: FontWeight.w700,
                 fontSize: 18),
           ),
           const SizedBox(height: 20),
-          _field(_nameCtrl, 'Account name', Icons.badge_outlined),
+          _field(_nameCtrl, l.accountNameField, Icons.badge_outlined),
           const SizedBox(height: 12),
-          _field(_urlCtrl, 'API-URL', Icons.link, onChanged: (_) => _onCredentialsChanged()),
+          _field(_urlCtrl, l.settingsApiUrl, Icons.link,
+              onChanged: (_) => _onCredentialsChanged()),
           const SizedBox(height: 12),
-          _field(_keyCtrl, 'API-Key', Icons.key_outlined,
+          _field(_keyCtrl, l.settingsApiKey, Icons.key_outlined,
               obscure: _keyObscured,
               suffixIcon: IconButton(
                 icon: Icon(
@@ -486,7 +496,8 @@ class _AccountSheetState extends State<_AccountSheet> {
                   color: context.colorTextMuted,
                   size: 18,
                 ),
-                onPressed: () => setState(() => _keyObscured = !_keyObscured),
+                onPressed: () =>
+                    setState(() => _keyObscured = !_keyObscured),
               ),
               onChanged: (_) => _onCredentialsChanged()),
           const SizedBox(height: 16),
@@ -538,7 +549,8 @@ class _AccountSheetState extends State<_AccountSheet> {
                           width: 16,
                           height: 16,
                           child: CircularProgressIndicator(strokeWidth: 2))
-                      : Text('Test connection', style: GoogleFonts.inter()),
+                      : Text(l.accountsTestConnection,
+                          style: GoogleFonts.inter()),
                 ),
               ),
               const SizedBox(width: 12),
@@ -546,7 +558,7 @@ class _AccountSheetState extends State<_AccountSheet> {
                 child: ElevatedButton(
                   onPressed: _testSuccess ? _save : null,
                   child: Text(
-                    isEdit ? 'Save' : 'Add',
+                    isEdit ? l.btnSave : l.accountsBtnAdd,
                     style: GoogleFonts.inter(fontWeight: FontWeight.w600),
                   ),
                 ),

@@ -467,8 +467,68 @@ abstract class AppLocalizations {
   /// Dialog: Konto löschen bestätigen
   ///
   /// In de, this message translates to:
-  /// **'Konto wirklich löschen?'**
-  String get accountsDeleteConfirm;
+  /// **'Konto \"{name}\" wirklich löschen?'**
+  String accountsDeleteConfirm(Object name);
+
+  /// Dialog: Aktives Konto löschen Warnung
+  ///
+  /// In de, this message translates to:
+  /// **'Dies ist dein aktives Konto. Das Löschen meldet dich ab und löscht alle gespeicherten Daten.'**
+  String get accountsDeleteActive;
+
+  /// Leer-Zustand: Keine Konten
+  ///
+  /// In de, this message translates to:
+  /// **'Noch keine Konten konfiguriert.'**
+  String get accountsNoAccounts;
+
+  /// Dialog: Ausstehende Änderungen Titel
+  ///
+  /// In de, this message translates to:
+  /// **'Ausstehende Änderungen'**
+  String get accountsPendingTitle;
+
+  /// Dialog: Ausstehende Änderungen Text
+  ///
+  /// In de, this message translates to:
+  /// **'{count} Änderungen wurden noch nicht synchronisiert. Trotzdem wechseln?'**
+  String accountsPendingBody(int count);
+
+  /// Button: Trotzdem Konto wechseln
+  ///
+  /// In de, this message translates to:
+  /// **'Trotzdem wechseln'**
+  String get accountsSwitchAnyway;
+
+  /// Sheet-Titel: Konto bearbeiten
+  ///
+  /// In de, this message translates to:
+  /// **'Konto bearbeiten'**
+  String get accountsEditTitle;
+
+  /// Sheet-Titel: Konto hinzufügen
+  ///
+  /// In de, this message translates to:
+  /// **'Konto hinzufügen'**
+  String get accountsAddTitle;
+
+  /// Button: Verbindung testen
+  ///
+  /// In de, this message translates to:
+  /// **'Verbindung testen'**
+  String get accountsTestConnection;
+
+  /// Validierungsfehler: URL/Key fehlt
+  ///
+  /// In de, this message translates to:
+  /// **'URL und Key sind erforderlich.'**
+  String get accountsUrlKeyRequired;
+
+  /// Button: Konto hinzufügen (Sheet)
+  ///
+  /// In de, this message translates to:
+  /// **'Hinzufügen'**
+  String get accountsBtnAdd;
 
   /// Feld: Kontoname
   ///

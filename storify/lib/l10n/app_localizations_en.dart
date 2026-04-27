@@ -203,7 +203,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accountsDelete => 'Delete account';
 
   @override
-  String get accountsDeleteConfirm => 'Really delete this account?';
+  String accountsDeleteConfirm(Object name) {
+    return 'Really delete account \"$name\"?';
+  }
+
+  @override
+  String get accountsDeleteActive =>
+      'This is your active account. Deleting it will log you out and clear all cached data.';
+
+  @override
+  String get accountsNoAccounts => 'No accounts configured yet.';
+
+  @override
+  String get accountsPendingTitle => 'Pending changes';
+
+  @override
+  String accountsPendingBody(int count) {
+    return '$count changes have not been synced yet. Switch anyway?';
+  }
+
+  @override
+  String get accountsSwitchAnyway => 'Switch anyway';
+
+  @override
+  String get accountsEditTitle => 'Edit account';
+
+  @override
+  String get accountsAddTitle => 'Add account';
+
+  @override
+  String get accountsTestConnection => 'Test connection';
+
+  @override
+  String get accountsUrlKeyRequired => 'URL and key are required.';
+
+  @override
+  String get accountsBtnAdd => 'Add';
 
   @override
   String get accountNameField => 'Account name';

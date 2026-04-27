@@ -203,7 +203,42 @@ class AppLocalizationsDe extends AppLocalizations {
   String get accountsDelete => 'Konto löschen';
 
   @override
-  String get accountsDeleteConfirm => 'Konto wirklich löschen?';
+  String accountsDeleteConfirm(Object name) {
+    return 'Konto \"$name\" wirklich löschen?';
+  }
+
+  @override
+  String get accountsDeleteActive =>
+      'Dies ist dein aktives Konto. Das Löschen meldet dich ab und löscht alle gespeicherten Daten.';
+
+  @override
+  String get accountsNoAccounts => 'Noch keine Konten konfiguriert.';
+
+  @override
+  String get accountsPendingTitle => 'Ausstehende Änderungen';
+
+  @override
+  String accountsPendingBody(int count) {
+    return '$count Änderungen wurden noch nicht synchronisiert. Trotzdem wechseln?';
+  }
+
+  @override
+  String get accountsSwitchAnyway => 'Trotzdem wechseln';
+
+  @override
+  String get accountsEditTitle => 'Konto bearbeiten';
+
+  @override
+  String get accountsAddTitle => 'Konto hinzufügen';
+
+  @override
+  String get accountsTestConnection => 'Verbindung testen';
+
+  @override
+  String get accountsUrlKeyRequired => 'URL und Key sind erforderlich.';
+
+  @override
+  String get accountsBtnAdd => 'Hinzufügen';
 
   @override
   String get accountNameField => 'Kontoname';

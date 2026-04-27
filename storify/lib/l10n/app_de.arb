@@ -196,8 +196,41 @@
   "accountsDelete": "Konto löschen",
   "@accountsDelete": { "description": "Button: Konto löschen" },
 
-  "accountsDeleteConfirm": "Konto wirklich löschen?",
+  "accountsDeleteConfirm": "Konto \"{name}\" wirklich löschen?",
   "@accountsDeleteConfirm": { "description": "Dialog: Konto löschen bestätigen" },
+
+  "accountsDeleteActive": "Dies ist dein aktives Konto. Das Löschen meldet dich ab und löscht alle gespeicherten Daten.",
+  "@accountsDeleteActive": { "description": "Dialog: Aktives Konto löschen Warnung" },
+
+  "accountsNoAccounts": "Noch keine Konten konfiguriert.",
+  "@accountsNoAccounts": { "description": "Leer-Zustand: Keine Konten" },
+
+  "accountsPendingTitle": "Ausstehende Änderungen",
+  "@accountsPendingTitle": { "description": "Dialog: Ausstehende Änderungen Titel" },
+
+  "accountsPendingBody": "{count} Änderungen wurden noch nicht synchronisiert. Trotzdem wechseln?",
+  "@accountsPendingBody": {
+    "description": "Dialog: Ausstehende Änderungen Text",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "accountsSwitchAnyway": "Trotzdem wechseln",
+  "@accountsSwitchAnyway": { "description": "Button: Trotzdem Konto wechseln" },
+
+  "accountsEditTitle": "Konto bearbeiten",
+  "@accountsEditTitle": { "description": "Sheet-Titel: Konto bearbeiten" },
+
+  "accountsAddTitle": "Konto hinzufügen",
+  "@accountsAddTitle": { "description": "Sheet-Titel: Konto hinzufügen" },
+
+  "accountsTestConnection": "Verbindung testen",
+  "@accountsTestConnection": { "description": "Button: Verbindung testen" },
+
+  "accountsUrlKeyRequired": "URL und Key sind erforderlich.",
+  "@accountsUrlKeyRequired": { "description": "Validierungsfehler: URL/Key fehlt" },
+
+  "accountsBtnAdd": "Hinzufügen",
+  "@accountsBtnAdd": { "description": "Button: Konto hinzufügen (Sheet)" },
 
   "accountNameField": "Kontoname",
   "@accountNameField": { "description": "Feld: Kontoname" },
