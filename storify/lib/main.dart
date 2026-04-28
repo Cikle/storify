@@ -17,7 +17,10 @@ import 'package:storify/utils/constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await NotificationService.instance.init();
+  GoogleFonts.config.allowRuntimeFetching = false;
+  try {
+    await NotificationService.instance.init();
+  } catch (_) {}
   final storage = await StorageService.getInstance();
   final api = ApiService(storage);
   final sync = SyncService(storage, api);

@@ -18,7 +18,7 @@ class NotificationService {
   // Must be called once in main() after WidgetsFlutterBinding.ensureInitialized()
   Future<void> init() async {
     const androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/launcher_icon');
     const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: false, // Permission is requested separately with an explanation
       requestBadgePermission: true,
