@@ -45,11 +45,15 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
       - name: Rename APK
-        run: mv storify/build/app/outputs/flutter-apk/app-release.apk storify/build/app/outputs/flutter-apk/storify-${{ github.ref_name }}.apk
+        run: |
+          cp storify/build/app/outputs/flutter-apk/app-release.apk storify/build/app/outputs/flutter-apk/storify-${{ github.ref_name }}.apk
+          cp storify/build/app/outputs/flutter-apk/app-release.apk storify/build/app/outputs/flutter-apk/storify.apk
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: Storify ${{ github.ref_name }}
-          files: storify/build/app/outputs/flutter-apk/storify-${{ github.ref_name }}.apk
+          files: |
+            storify/build/app/outputs/flutter-apk/storify-${{ github.ref_name }}.apk
+            storify/build/app/outputs/flutter-apk/storify.apk
           generate_release_notes: true
