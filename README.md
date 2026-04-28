@@ -1,6 +1,22 @@
-# Storify
+<p align="center">
+  <img src="storify/assets/images/storify_logo.svg" alt="Storify" width="160"/>
+</p>
 
-A self-hosted inventory management app built with Flutter, backed by a PHP REST API on MySQL. Scan barcodes, track stock across locations, and stay in sync — even offline.
+<h1 align="center">Storify</h1>
+
+<p align="center"><b>Self-hosted inventory management for Flutter, backed by a PHP REST API on MySQL.</b></p>
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-brightgreen" alt="License"/></a>
+  <a href="https://github.com/Cikle/storify/releases/latest"><img src="https://img.shields.io/github/v/release/Cikle/storify" alt="Latest Release"/></a>
+  <img src="https://img.shields.io/badge/platform-Android%20%7C%20iOS-3BCB8D" alt="Platform"/>
+  <img src="https://img.shields.io/badge/Flutter-3.6+-54C5F8" alt="Flutter"/>
+</p>
+
+---
+
+> [!IMPORTANT]
+> Storify requires a **self-hosted PHP + MySQL backend** to function. The app will not work without it. See [Setup](#setup) to get started.
 
 ## Features
 

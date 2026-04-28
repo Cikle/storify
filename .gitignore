@@ -1,6 +1,7 @@
 .env
 ~$*
 php_api/config/db.php
+.vscode/
 # Flutter
 storify/.dart_tool/
 storify/build/
