@@ -1,0 +1,37 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="topGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5BE3A7"/>
+      <stop offset="100%" stop-color="#3BCB8D"/>
+    </linearGradient>
+    <linearGradient id="leftGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2FAF7A"/>
+      <stop offset="100%" stop-color="#1F8C62"/>
+    </linearGradient>
+    <clipPath id="rightFaceClip">
+      <polygon points="512.0,576.8 879.2,360.8 879.2,738.8 512.0,954.8"/>
+    </clipPath>
+  </defs>
+
+  <!-- Top face -->
+  <polygon points="512.0,144.8 879.2,360.8 512.0,576.8 144.8,360.8" fill="url(#topGrad)"/>
+
+  <!-- Left wall -->
+  <polygon points="144.8,360.8 512.0,576.8 512.0,954.8 144.8,738.8" fill="url(#leftGrad)"/>
+
+  <g clip-path="url(#rightFaceClip)">
+    <text
+      transform="matrix(0.85, -0.5, 0, 1.0, 512.0, 576.8)"
+      x="216.0"
+      y="221.4"
+      font-family="Georgia, Helvetica, sans-serif"
+      font-size="216"
+      font-weight="bold"
+      fill="#136746"
+      opacity="1"
+      text-anchor="middle"
+      dominant-baseline="middle"
+      letter-spacing="16.2"
+    >:3</text>
+  </g>
+</svg>

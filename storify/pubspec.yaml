@@ -70,14 +70,15 @@ flutter:
   assets:
     - assets/icon/
     - assets/splash/
+    - assets/images/
 
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icon/icon.png"
+  image_path: "assets/images/storify_logo.png"
   min_sdk_android: 21
   adaptive_icon_background: "#0E1016"
-  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
+  adaptive_icon_foreground: "assets/images/storify_logo.png"
 
 flutter_native_splash:
   color: "#0E1016"
