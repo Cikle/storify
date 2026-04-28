@@ -1,7 +1,7 @@
 name: storify
 description: "Inventarverwaltungs-App mit Strichcode-Erfassung – cikle"
 publish_to: 'none'
-version: 1.1.0+10
+version: 1.1.1+11
 
 environment:
   sdk: ^3.6.0
