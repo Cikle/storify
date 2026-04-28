@@ -11,7 +11,7 @@ class UpdateService {
       'https://api.github.com/repos/Cikle/storify/releases/latest';
 
   static String _apkDownloadUrl(String version) =>
-      'https://github.com/Cikle/storify/releases/download/v$version/storify.apk';
+      'https://github.com/Cikle/storify/releases/download/v$version/storify-v$version.apk';
 
   /// Returns the latest version string if it is newer than the installed version,
   /// otherwise null. All errors return null silently.
