@@ -70,9 +70,9 @@
 
 ### Backend
 
-1. Upload `php_api/` to your web server
-2. Copy `php_api/config/db.php.example` → `php_api/config/db.php` and fill in your credentials
-3. Run `php_api/database/schema.sql` on your MySQL database
+1. Upload `api/` to your web server
+2. Copy `api/config/db.php.example` → `api/config/db.php` and fill in your credentials
+3. Run `api/database/schema.sql` on your MySQL database
 4. Set a strong random `API_KEY` in `db.php`
 
 ### App
@@ -95,7 +95,7 @@ flutter build ipa              # iOS (requires Mac + Xcode)
 ## Project structure
 
 ```
-php_api/          PHP REST API
+api/          PHP REST API
   config/         DB connection + API key
   helpers/        Response + request helpers
   items/          /items endpoints (list, detail, photo)
