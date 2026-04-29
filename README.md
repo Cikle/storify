@@ -18,6 +18,20 @@
 > [!IMPORTANT]
 > Storify requires a **self-hosted PHP + MySQL backend** to function. The app will not work without it. See [Setup](#setup) to get started.
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/screenshot_dashboard.jpeg" width="150"/>
+  &nbsp;
+  <img src="docs/screenshots/screenshot_inventory.jpeg" width="150"/>
+  &nbsp;
+  <img src="docs/screenshots/screenshot_item_detail.jpeg" width="150"/>
+  &nbsp;
+  <img src="docs/screenshots/screenshot_locations.jpeg" width="150"/>
+  &nbsp;
+  <img src="docs/screenshots/screenshot_scanner.jpeg" width="150"/>
+</p>
+
 ## Features
 
 - **Inventory management** — add, edit, delete items with name, category, barcode, location, expiry date, unit, pack size, and photo
